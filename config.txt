@@ -1,3 +1,0 @@
-gafas:true;false
-pelo:rubio;castany;moreno
-genero:mujer;hombre

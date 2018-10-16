@@ -1,5 +1,5 @@
 gmm.jpeg:gafas true;pelo moreno;genero mujer
-grm.jpeg:gafas true;pelo rubio;genero mujer
+gmm.jpeg:gafas true;pelo rubio;genero mujer
 gcm.jpeg:gafas true;pelo castany;genero mujer
 mm.jpeg:gafas false;pelo moreno;genero mujer
 rm.jpeg:gafas false;pelo rubio;genero mujer

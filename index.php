@@ -23,12 +23,13 @@
 */
 		$config = specFile(); //Creamos el array de características.
 		$cartasText = specConfig(); //Creamos el array con las cartas.
+
 		if($cartasText == false){ //Si hubiese un nombre de imágen duplicado daría error.
-			echo "ERROR";
+			generarErrores(0);
 		}else if(!conf($cartasText,$config)){ //Si hubiese una característica de una carta que no exista en config, daría error.
-			echo "ERROR1";
+			generarErrores(1);
 		}else if(!equal($cartasText)){ //Si dos cartas tuvieran las mismas características, daría error.
-			echo "ERROR2";
+			generarErrores(2);
 		}else{	//Si no entrase en ninguno de los errores, cargaría la página
 			echo "good";
 		}
@@ -125,6 +126,29 @@
 				}
 			}
 		}
+
+		//Función que genera los archivos de error
+		function generarErrores($numError){
+			if ($numError == 0){
+				//Un mismo nombre de imagen aparece dos veces en el archivo de configuracion
+				$nombreFichero = fopen("Errores/duplicadas.txt", "w");
+				fwrite($nombreFichero, "Error: El nombre de las cartas debe ser diferente");
+				fclose($nombreFichero);
+			}
+			else if($numError ==  1){
+				//Dos imagenes tienen las mismas caracteristicas
+				$mismasC= fopen("Errores/igualCaracteristicas.txt", "w");
+				fwrite($mismasC, "Error: Dos imagenes no pueden tener las mismas características entre si");
+				fclose($mismasC);
+			}
+			else if($numError == 2){
+				//Una caracteristica no aparece en el fichero config.txt
+				$noFound= fopen("Errores/no_encontrada.txt", "w");
+				fwrite($noFound, "Error: Característica no encontrada en el archivo config.txt");
+				fclose($noFound);
+			}
+		}
+
 	?>
 </body>
 </html>

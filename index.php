@@ -23,9 +23,14 @@
 			}
 		}
 */
+		
 		$config = specFile(); //Creamos el array de características.
 		$cartasText = specConfig(); //Creamos el array con las cartas.
-
+		$keys = array_keys($cartasText);
+		shuffle($keys);
+		foreach ($keys as $key) {
+			$cartas[$key] = $cartasText[$key];
+			}
 		if($cartasText == false){ //Si hubiese un nombre de imágen duplicado daría error.
 			generarErrores(0);
 		}else if(!conf($cartasText,$config)){ //Si hubiese una característica de una carta que no exista en config, daría error.
@@ -33,7 +38,37 @@
 		}else if(!equal($cartasText)){ //Si dos cartas tuvieran las mismas características, daría error.
 			generarErrores(2);
 		}else{	//Si no entrase en ninguno de los errores, cargaría la página
+			$rand = array_rand($cartas);
+			$seleccionada = $cartas[$rand];
+			print_r($seleccionada);
+			echo "<img src='Imagenes/reverso.jpeg'>";
+			echo "<table>";
+			$contador = 0;
+			foreach ($cartas as $key => $carta) {
+				if($contador == 0){
+					echo "<tr>";	
+				}
+				if($contador == 3){
+					echo "</tr>";
+					$contador= 0;
+				}
+				echo "<td>";
+					echo "<img src='Imagenes/$key' id='".$key."' gafas='".$carta['gafas']."' pelo='".$carta['pelo']."' genero='".$carta['genero']."'>";
+				echo "</td>";
+				$contador++;
+			}
+				$preguntas = ["¿Tu pelo es rubio?","¿Tu pelo es castaño?","¿Tu pelo es moreno?","¿Tienes gafas?","¿Eres Mujer?","¿Eres homre?"];
+				$respuestas = ["Sí","No"];
+				for($i=0;$i<6;$i++){
+					echo "<select>";
+					echo "<option value='".$preguntas[$i]."'>".$preguntas[$i]."</option>";
+					for($j=0;$j<2;$j++){
+						echo "<option value='".$respuestas[$i]."'>".$respuestas[$i]."</option>";
+					}
+					echo "</select>";
+				}
 			?>
+				
 				<div id="ventanaError">
 					<h3 id="textError"></h3>
 					<button id="cerrarVentana" onclick="closeWindow(this)">Cerrar</button>

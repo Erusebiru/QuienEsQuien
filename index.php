@@ -2,27 +2,14 @@
 <html>
 <head>
 	<title></title>
+	<script type="text/javascript" src="js/script.js" defer></script>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
 	<?
-		/*class Carta {
-			public $id;
-			public $imagen;
-			public $gafas;
-			public $pelo;
-			public $genero;
-
-			function __construct($id, $imagen,$gafas, $pelo, $genero){
-				$this->id = $id;
-				$this->imagen = $imagen;
-				$this->gafas = $gafas;
-				$this->pelo = $pelo;
-				$this->genero = $genero;
-			}
-		}
-*/
 		$config = specFile(); //Creamos el array de características.
 		$cartasText = specConfig(); //Creamos el array con las cartas.
+
 		if($cartasText == false){ //Si hubiese un nombre de imágen duplicado daría error.
 			echo "ERROR";
 		}else if(!conf($cartasText,$config)){ //Si hubiese una característica de una carta que no exista en config, daría error.
@@ -30,8 +17,14 @@
 		}else if(!equal($cartasText)){ //Si dos cartas tuvieran las mismas características, daría error.
 			echo "ERROR2";
 		}else{	//Si no entrase en ninguno de los errores, cargaría la página
-			echo "good";
+			?>	
+				<div id="ventanaError">
+					<h3 id="textError"></h3>
+					<button id="cerrarVentana" onclick="closeWindow(this)">Cerrar</button>
+				</div>
+			<?
 		}
+
 
 		//Función para crear el array de configuración
 		function specFile(){
@@ -126,5 +119,6 @@
 			}
 		}
 	?>
+	
 </body>
 </html>

@@ -2,6 +2,8 @@
 <html>
 <head>
 	<title></title>
+	<script type="text/javascript" src="js/script.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
 	<?
@@ -31,7 +33,12 @@
 		}else if(!equal($cartasText)){ //Si dos cartas tuvieran las mismas características, daría error.
 			generarErrores(2);
 		}else{	//Si no entrase en ninguno de los errores, cargaría la página
-			echo "good";
+			?>
+				<div id="ventanaError">
+					<h3 id="textError"></h3>
+					<button id="cerrarVentana" onclick="closeWindow(this)">Cerrar</button>
+				</div>
+			<?
 		}
 
 		//Función para crear el array de configuración

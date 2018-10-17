@@ -1,0 +1,17 @@
+#ventanaError{
+	width: 350px;
+	height: 100px;
+	position: absolute;
+	left: 35%;
+	margin-right: auto;
+	z-index: 2;
+	top: 35%;
+	border: 1px solid black;
+	text-align: center;
+	background-color: white;
+	vertical-align: center;
+	padding: 20px;
+	display: none;
+	box-shadow: 0 0 10px #333;
+	border-radius: 12px;
+}

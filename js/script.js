@@ -1,7 +1,7 @@
 
-/*var cartas = [];
+var cartas = [];
 var selectedItem;
-
+/*
 function Carta(imagen,gafas,pelo,genero){
 	this.imagen = imagen;
 	this.gafas = gafas;
@@ -57,7 +57,6 @@ function checkCombo(combos){
 		if(count > 1){
 			document.getElementById("ventanaError").style.display = "inline"
 			document.getElementById("textError").innerHTML = "Debes realizar sólo una pregunta.";
-			document.getElementById("preguntas").reset();
 			return false;
 		}
 	}

@@ -18,8 +18,9 @@ img{
 	width: 120px;
 	height: 140px;
 }
+
 #container{
-	width: 60%;
+	width: 70%;
 	margin: 0 auto;
 }
 #formulario{
@@ -30,7 +31,7 @@ img{
 	margin: 30px;
 }
 .combo{
-	width: 170px;
+	width: 180px;
 }
 #cartaAsignada{
 	width: 6%;

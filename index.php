@@ -9,11 +9,7 @@
 	<?	
 		$config = specFile(); //Creamos el array de características.
 		$cartasText = specConfig(); //Creamos el array con las cartas.
-		$keys = array_keys($cartasText);
-		shuffle($keys);
-		foreach ($keys as $key) {
-			$cartas[$key] = $cartasText[$key];
-			}
+
 		if($cartasText == false){ //Si hubiese un nombre de imágen duplicado daría error.
 			generarErrores(0);
 		}else if(!conf($cartasText,$config)){ //Si hubiese una característica de una carta que no exista en config, daría error.
@@ -21,6 +17,11 @@
 		}else if(!equal($cartasText)){ //Si dos cartas tuvieran las mismas características, daría error.
 			generarErrores(2);
 		}else{	//Si no entrase en ninguno de los errores, cargaría la página
+			$keys = array_keys($cartasText);
+			shuffle($keys);
+			foreach ($keys as $key) {
+				$cartas[$key] = $cartasText[$key];
+			}
 			$rand = array_rand($cartas); //Barajamos las cartas y nos seleccionará la key de la carta
 			$seleccionada = $cartas[$rand]; //Sacamos las características de la carta
 			?>
@@ -91,7 +92,7 @@
 					$lineaExp = explode(':', $linea); //Hacemos split para dividir key de value
 					$lineaExp2 = explode("\r\n",$lineaExp[1]); //Hacemos un split para eliminar el salto de carro y el salto de línea
 					$configKey = $lineaExp[0]; //Creamos la variable con la key
-					$configValues = explode(';', $lineaExp2[0]); //Hacemos split para crear un array con los valores
+					$configValues = explode(',', $lineaExp2[0]); //Hacemos split para crear un array con los valores
 					$config[$configKey] = $configValues; //Asignamos los valores a la key
 				}
 			}
@@ -107,7 +108,7 @@
 				$img = explode(':',$linea); //Hacemos un split separando el nombre de la imágen y los valores
 				$imgName = $img[0]; //Instanciamos el nombre de la imagen
 				$imgValues = $img[1]; //Instanciamos los valores 
-				$split1 = explode(';', $img[1]); //Mete en un array, por cada vuelta, un array con la línea anterior spliteada por punto y coma
+				$split1 = explode(',', $img[1]); //Mete en un array, por cada vuelta, un array con la línea anterior spliteada por punto y coma
 				foreach($split1 as $value){
 					$split2 = preg_split('/ +/', $value);
 					$carta[$split2[0]] = $split2[1];

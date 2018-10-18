@@ -45,8 +45,8 @@ img{
 	transform: rotateY(180deg);
 	background-image: url('../Imagenes/reverso.jpeg');
 	background-size: cover;
-	height: 120px;
-	width: 100px;
+	width: 120px;
+	height: 140px;
 }
 .flip-card .front-face, .flip-card .back-face{
 	transition: transform 500ms;
@@ -58,8 +58,8 @@ img{
 }
 .flip-card{
 
-	width: 110px;
-	height: 130px;
+	width: 120px;
+	height: 140px;
 	margin: 10px;
 	position: relative;
 }

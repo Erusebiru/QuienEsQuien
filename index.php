@@ -6,24 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
-	<?
-		/*class Carta {
-			public $id;
-			public $imagen;
-			public $gafas;
-			public $pelo;
-			public $genero;
-
-			function __construct($id, $imagen,$gafas, $pelo, $genero){
-				$this->id = $id;
-				$this->imagen = $imagen;
-				$this->gafas = $gafas;
-				$this->pelo = $pelo;
-				$this->genero = $genero;
-			}
-		}
-*/
-		
+	<?	
 		$config = specFile(); //Creamos el array de características.
 		$cartasText = specConfig(); //Creamos el array con las cartas.
 		$keys = array_keys($cartasText);
@@ -38,42 +21,65 @@
 		}else if(!equal($cartasText)){ //Si dos cartas tuvieran las mismas características, daría error.
 			generarErrores(2);
 		}else{	//Si no entrase en ninguno de los errores, cargaría la página
-			$rand = array_rand($cartas);
-			$seleccionada = $cartas[$rand];
-			print_r($seleccionada);
-			echo "<img src='Imagenes/reverso.jpeg'>";
-			echo "<table>";
-			$contador = 0;
-			foreach ($cartas as $key => $carta) {
-				if($contador == 0){
-					echo "<tr>";	
-				}
-				if($contador == 3){
-					echo "</tr>";
-					$contador= 0;
-				}
-				echo "<td>";
-					echo "<img src='Imagenes/$key' id='".$key."' gafas='".$carta['gafas']."' pelo='".$carta['pelo']."' genero='".$carta['genero']."'>";
-				echo "</td>";
-				$contador++;
-			}
-				$preguntas = ["¿Tu pelo es rubio?","¿Tu pelo es castaño?","¿Tu pelo es moreno?","¿Tienes gafas?","¿Eres Mujer?","¿Eres homre?"];
-				$respuestas = ["Sí","No"];
-				for($i=0;$i<6;$i++){
-					echo "<select>";
-					echo "<option value='".$preguntas[$i]."'>".$preguntas[$i]."</option>";
-					for($j=0;$j<2;$j++){
-						echo "<option value='".$respuestas[$i]."'>".$respuestas[$i]."</option>";
-					}
-					echo "</select>";
-				}
+			$rand = array_rand($cartas); //Barajamos las cartas y nos seleccionará la key de la carta
+			$seleccionada = $cartas[$rand]; //Sacamos las características de la carta
 			?>
-				
+			<div id="cartaAsignada">
+				<img src="Imagenes/<?=$rand?>" id="<?=$rand?>" gafas="<?=$seleccionada['gafas']?>" pelo="<?=$seleccionada['pelo']?>" genero="<?$seleccionada['genero']?>">
+			</div>
+			<div id="container">
+				<div id="formulario">
+					<?
+						$preguntas = ["¿Su pelo es rubio?","¿Su pelo es castaño?","¿Su pelo es moreno?","¿Tiene gafas?","¿Es una Mujer?","¿Es un hombre?"];
+						$respuestas = ["Sí","No"];
+						echo "<form id='preguntas'>";
+						for($i=0;$i<6;$i++){
+							echo "<br><select class='combo'>";
+							echo "<option selected='selected' disabled='true' value='".$preguntas[$i]."'>".$preguntas[$i]."</option>";
+							for($j=0;$j<2;$j++){
+								echo "<option value='".$respuestas[$j]."'>".$respuestas[$j]."</option>";
+							}
+							echo "</select><br>";
+						}
+						echo "</form>";
+						echo "<br><button onclick='workCombo()' id='preguntar'>Preguntar</button>";
+					?>
+				</div>
+
+				<div id="tablaCartas"><?
+					echo "<table>";
+					$contador = 0;
+					foreach ($cartas as $key => $carta) {
+						if($contador == 0){
+							echo "<tr>";	
+						}
+						if($contador == 3){
+							echo "</tr>";
+							$contador= 0;
+						}
+						/*echo "<td>";
+							echo "<div class='flip-card' onclick='rotate(this)'>";
+								echo "<div class='front-face imagen'><img src='Imagenes/$key' id='".$key."' gafas='".$carta['gafas']."' pelo='".$carta['pelo']."' genero='".$carta['genero']."></div>";
+								echo "<div class='back-face'></div>";
+							echo "</div>";
+						echo "</td>";*/
+						?><td>
+							<div class="flip-card" onclick="rotate(this);">
+								<div class="front-face imagen"><img src="Imagenes/<?=$key?>"" id="<?=$key?>" gafas="<?=$carta['gafas']?>" pelo="<?=$carta['pelo']?>" genero="<?=$carta['genero']?>"></div>
+								<div class="back-face"></div>
+							</div>
+						</td>
+						<?$contador++;
+					}
+					?>
+				</div>
+
 				<div id="ventanaError">
 					<h3 id="textError"></h3>
 					<button id="cerrarVentana" onclick="closeWindow(this)">Cerrar</button>
 				</div>
-			<?
+			</div>
+				<?
 		}
 
 		//Función para crear el array de configuración

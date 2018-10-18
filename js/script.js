@@ -23,6 +23,12 @@ Carta.prototype.genero = function() {
     return this.genero;
 };*/
 
+function rotate(card){
+	if(card.className == 'flip-card'){
+		card.classList.toggle('is-flipped');
+	}
+}
+
 function workCombo(){
 	var combos = document.getElementsByClassName("combo");
 	if(checkCombo(combos)){

@@ -3,15 +3,68 @@
 	height: 100px;
 	position: absolute;
 	left: 35%;
-	margin-right: auto;
 	z-index: 2;
 	top: 35%;
 	border: 1px solid black;
 	text-align: center;
 	background-color: white;
-	vertical-align: center;
 	padding: 20px;
 	display: none;
 	box-shadow: 0 0 10px #333;
 	border-radius: 12px;
+}
+
+img{
+	width: 120px;
+	height: 140px;
+}
+#container{
+	width: 60%;
+	margin: 0 auto;
+}
+#formulario{
+	float: left;
+	margin: 30px;
+}
+#tablaCartas{
+	margin: 30px;
+}
+.combo{
+	width: 170px;
+}
+#cartaAsignada{
+	width: 6%;
+	margin: 0 auto;
+}
+
+.imagen:hover{
+	box-shadow: 0 0 15px #333;
+}
+
+.back-face{
+	transform: rotateY(180deg);
+	background-image: url('../Imagenes/reverso.jpeg');
+	background-size: cover;
+	height: 120px;
+	width: 100px;
+}
+.flip-card .front-face, .flip-card .back-face{
+	transition: transform 500ms;
+	display: block;
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	backface-visibility: hidden;
+}
+.flip-card{
+
+	width: 110px;
+	height: 130px;
+	margin: 10px;
+	position: relative;
+}
+.flip-card.is-flipped{
+	transform: rotateY(180deg);
+	transition: transform 1s;
+	transform-style: preserve-3d;
 }

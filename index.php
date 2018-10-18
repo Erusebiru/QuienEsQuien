@@ -2,29 +2,85 @@
 <html>
 <head>
 	<title></title>
-	<script type="text/javascript" src="js/script.js" defer></script>
+	<script type="text/javascript" src="js/script.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
-	<?
+	<?	
 		$config = specFile(); //Creamos el array de características.
 		$cartasText = specConfig(); //Creamos el array con las cartas.
-
+		$keys = array_keys($cartasText);
+		shuffle($keys);
+		foreach ($keys as $key) {
+			$cartas[$key] = $cartasText[$key];
+			}
 		if($cartasText == false){ //Si hubiese un nombre de imágen duplicado daría error.
-			echo "ERROR";
+			generarErrores(0);
 		}else if(!conf($cartasText,$config)){ //Si hubiese una característica de una carta que no exista en config, daría error.
-			echo "ERROR1";
+			generarErrores(1);
 		}else if(!equal($cartasText)){ //Si dos cartas tuvieran las mismas características, daría error.
-			echo "ERROR2";
+			generarErrores(2);
 		}else{	//Si no entrase en ninguno de los errores, cargaría la página
-			?>	
+			$rand = array_rand($cartas); //Barajamos las cartas y nos seleccionará la key de la carta
+			$seleccionada = $cartas[$rand]; //Sacamos las características de la carta
+			?>
+			<div id="cartaAsignada">
+				<img src="Imagenes/<?=$rand?>" id="<?=$rand?>" gafas="<?=$seleccionada['gafas']?>" pelo="<?=$seleccionada['pelo']?>" genero="<?$seleccionada['genero']?>">
+			</div>
+			<div id="container">
+				<div id="formulario">
+					<?
+						$preguntas = ["¿Su pelo es rubio?","¿Su pelo es castaño?","¿Su pelo es moreno?","¿Tiene gafas?","¿Es una Mujer?","¿Es un hombre?"];
+						$respuestas = ["Sí","No"];
+						echo "<form id='preguntas'>";
+						for($i=0;$i<6;$i++){
+							echo "<br><select class='combo'>";
+							echo "<option selected='selected' disabled='true' value='".$preguntas[$i]."'>".$preguntas[$i]."</option>";
+							for($j=0;$j<2;$j++){
+								echo "<option value='".$respuestas[$j]."'>".$respuestas[$j]."</option>";
+							}
+							echo "</select><br>";
+						}
+						echo "</form>";
+						echo "<br><button onclick='workCombo()' id='preguntar'>Preguntar</button>";
+					?>
+				</div>
+
+				<div id="tablaCartas"><?
+					echo "<table>";
+					$contador = 0;
+					foreach ($cartas as $key => $carta) {
+						if($contador == 0){
+							echo "<tr>";	
+						}
+						if($contador == 3){
+							echo "</tr>";
+							$contador= 0;
+						}
+						/*echo "<td>";
+							echo "<div class='flip-card' onclick='rotate(this)'>";
+								echo "<div class='front-face imagen'><img src='Imagenes/$key' id='".$key."' gafas='".$carta['gafas']."' pelo='".$carta['pelo']."' genero='".$carta['genero']."></div>";
+								echo "<div class='back-face'></div>";
+							echo "</div>";
+						echo "</td>";*/
+						?><td>
+							<div class="flip-card" onclick="rotate(this);">
+								<div class="front-face imagen"><img src="Imagenes/<?=$key?>"" id="<?=$key?>" gafas="<?=$carta['gafas']?>" pelo="<?=$carta['pelo']?>" genero="<?=$carta['genero']?>"></div>
+								<div class="back-face"></div>
+							</div>
+						</td>
+						<?$contador++;
+					}
+					?>
+				</div>
+
 				<div id="ventanaError">
 					<h3 id="textError"></h3>
 					<button id="cerrarVentana" onclick="closeWindow(this)">Cerrar</button>
 				</div>
-			<?
+			</div>
+				<?
 		}
-
 
 		//Función para crear el array de configuración
 		function specFile(){
@@ -118,7 +174,29 @@
 				}
 			}
 		}
+
+		//Función que genera los archivos de error
+		function generarErrores($numError){
+			if ($numError == 0){
+				//Un mismo nombre de imagen aparece dos veces en el archivo de configuracion
+				$nombreFichero = fopen("Errores/duplicadas.txt", "w");
+				fwrite($nombreFichero, "Error: El nombre de las cartas debe ser diferente");
+				fclose($nombreFichero);
+			}
+			else if($numError ==  1){
+				//Dos imagenes tienen las mismas caracteristicas
+				$mismasC= fopen("Errores/igualCaracteristicas.txt", "w");
+				fwrite($mismasC, "Error: Dos imagenes no pueden tener las mismas características entre si");
+				fclose($mismasC);
+			}
+			else if($numError == 2){
+				//Una caracteristica no aparece en el fichero config.txt
+				$noFound= fopen("Errores/no_encontrada.txt", "w");
+				fwrite($noFound, "Error: Característica no encontrada en el archivo config.txt");
+				fclose($noFound);
+			}
+		}
+
 	?>
-	
 </body>
 </html>

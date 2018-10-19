@@ -9,41 +9,47 @@
 	<?	
 		$config = specFile(); //Creamos el array de características.
 		$cartasText = specConfig(); //Creamos el array con las cartas.
-		$keys = array_keys($cartasText);
-		shuffle($keys);
-		foreach ($keys as $key) {
-			$cartas[$key] = $cartasText[$key];
-			}
+
 		if($cartasText == false){ //Si hubiese un nombre de imágen duplicado daría error.
 			generarErrores(0);
 		}else if(!conf($cartasText,$config)){ //Si hubiese una característica de una carta que no exista en config, daría error.
-			generarErrores(1);
-		}else if(!equal($cartasText)){ //Si dos cartas tuvieran las mismas características, daría error.
 			generarErrores(2);
+		}else if(!equal($cartasText)){ //Si dos cartas tuvieran las mismas características, daría error.
+			generarErrores(1);
 		}else{	//Si no entrase en ninguno de los errores, cargaría la página
+			$keys = array_keys($cartasText);
+			shuffle($keys);
+			foreach ($keys as $key) {
+				$cartas[$key] = $cartasText[$key];
+			}
 			$rand = array_rand($cartas); //Barajamos las cartas y nos seleccionará la key de la carta
 			$seleccionada = $cartas[$rand]; //Sacamos las características de la carta
 			?>
-			<div id="cartaAsignada">
-				<img src="Imagenes/<?=$rand?>" id="<?=$rand?>" gafas="<?=$seleccionada['gafas']?>" pelo="<?=$seleccionada['pelo']?>" genero="<?$seleccionada['genero']?>">
-			</div>
 			<div id="container">
-				<div id="formulario">
-					<?
-						$preguntas = ["¿Su pelo es rubio?","¿Su pelo es castaño?","¿Su pelo es moreno?","¿Tiene gafas?","¿Es una Mujer?","¿Es un hombre?"];
-						$respuestas = ["Sí","No"];
+				<div id="left">
+					<div class="flip-card">
+						<div class="back-face-selected"></div>
+						<div id="selected">
+							<img src="Imagenes/<?=$rand?>" id="elegida" name="<?=$rand?>" gafas="<?=$seleccionada['gafas']?>" pelo="<?=$seleccionada['pelo']?>" genero="<?=$seleccionada['genero']?>">
+						</div>
+					</div>
+					<div id="formulario">
+						<?$preguntas = ["¿Tiene gafas?","¿Qué color de pelo tiene?","¿Qué genero es?"];
 						echo "<form id='preguntas'>";
-						for($i=0;$i<6;$i++){
-							echo "<br><select class='combo'>";
-							echo "<option selected='selected' disabled='true' value='".$preguntas[$i]."'>".$preguntas[$i]."</option>";
-							for($j=0;$j<2;$j++){
-								echo "<option value='".$respuestas[$j]."'>".$respuestas[$j]."</option>";
-							}
-							echo "</select><br>";
-						}
-						echo "</form>";
-						echo "<br><button onclick='workCombo()' id='preguntar'>Preguntar</button>";
-					?>
+							$num = 0;
+							foreach($config as $key => $carta){
+								?></br><select class="combo" id="<?=$key?>">";
+								<option selected="selected" disabled="true"><?=$preguntas[$num]?></option>;
+								<?foreach($carta as $value){?>
+									<option><?=$value?></option>;
+								<?}
+								$num++;?>
+								</select></br>
+								
+							<?}?>
+						</form>
+						<br><button onclick='workCombo()' id='preguntar'>Preguntar</button>
+					</div>
 				</div>
 
 				<div id="tablaCartas"><?
@@ -55,17 +61,11 @@
 						}
 						if($contador == 3){
 							echo "</tr>";
-							$contador= 0;
+							$contador = 0;
 						}
-						/*echo "<td>";
-							echo "<div class='flip-card' onclick='rotate(this)'>";
-								echo "<div class='front-face imagen'><img src='Imagenes/$key' id='".$key."' gafas='".$carta['gafas']."' pelo='".$carta['pelo']."' genero='".$carta['genero']."></div>";
-								echo "<div class='back-face'></div>";
-							echo "</div>";
-						echo "</td>";*/
 						?><td>
 							<div class="flip-card" onclick="rotate(this);">
-								<div class="front-face imagen"><img src="Imagenes/<?=$key?>"" id="<?=$key?>" gafas="<?=$carta['gafas']?>" pelo="<?=$carta['pelo']?>" genero="<?=$carta['genero']?>"></div>
+								<div class="front-face imagen"><img src="Imagenes/<?=$key?>" id="<?=$key?>" gafas="<?=$carta['gafas']?>" pelo="<?=$carta['pelo']?>" genero="<?=$carta['genero']?>"></div>
 								<div class="back-face"></div>
 							</div>
 						</td>
@@ -74,13 +74,19 @@
 					?>
 				</div>
 
-				<div id="ventanaError">
+				<div id="ventanaError" class="windowMessage">
 					<h3 id="textError"></h3>
 					<button id="cerrarVentana" onclick="closeWindow(this)">Cerrar</button>
 				</div>
+				<div id="ventanaRecord" class="windowMessage">
+					<h2>Guardar Record</h2>
+					<label for="nameRecord">Introduce tu nombre</label>
+					<input type="text" id="nameRecord">
+					<br><br>
+					<button>Enviar</button>
+				</div>
 			</div>
-				<?
-		}
+		<?}
 
 		//Función para crear el array de configuración
 		function specFile(){
@@ -91,7 +97,7 @@
 					$lineaExp = explode(':', $linea); //Hacemos split para dividir key de value
 					$lineaExp2 = explode("\r\n",$lineaExp[1]); //Hacemos un split para eliminar el salto de carro y el salto de línea
 					$configKey = $lineaExp[0]; //Creamos la variable con la key
-					$configValues = explode(';', $lineaExp2[0]); //Hacemos split para crear un array con los valores
+					$configValues = explode(',', $lineaExp2[0]); //Hacemos split para crear un array con los valores
 					$config[$configKey] = $configValues; //Asignamos los valores a la key
 				}
 			}
@@ -107,7 +113,7 @@
 				$img = explode(':',$linea); //Hacemos un split separando el nombre de la imágen y los valores
 				$imgName = $img[0]; //Instanciamos el nombre de la imagen
 				$imgValues = $img[1]; //Instanciamos los valores 
-				$split1 = explode(';', $img[1]); //Mete en un array, por cada vuelta, un array con la línea anterior spliteada por punto y coma
+				$split1 = explode(',', $img[1]); //Mete en un array, por cada vuelta, un array con la línea anterior spliteada por punto y coma
 				foreach($split1 as $value){
 					$split2 = preg_split('/ +/', $value);
 					$carta[$split2[0]] = $split2[1];

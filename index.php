@@ -29,7 +29,7 @@
 				<div id="left">
 					<div class="flip-card">
 						<div class="back-face-selected"></div>
-						<div id="selected">
+						<div class="selected">
 							<img src="Imagenes/<?=$rand?>" id="elegida" name="<?=$rand?>" gafas="<?=$seleccionada['gafas']?>" pelo="<?=$seleccionada['pelo']?>" genero="<?=$seleccionada['genero']?>">
 						</div>
 					</div>

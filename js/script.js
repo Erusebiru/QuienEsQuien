@@ -1,33 +1,11 @@
-//var cartas = [];
+
 var selectedItem;
 var numPreguntas = 0;
 var numPreguntasInARow = 0;
 var cartasGiradas = 0;
 var cartasGiradasInARow = 0;
 var messageErrorDone = 0;
-
 var sound = new Audio('sounds/sonic.mp3');
-/*
-function Carta(imagen,gafas,pelo,genero){
-	this.imagen = imagen;
-	this.gafas = gafas;
-	this.pelo = pelo;
-	this.genero = genero;
-}
-
-
-Carta.prototype.imagen = function() {
-    return this.imagen;
-};
-Carta.prototype.gafas = function() {
-    return this.gafas;
-};
-Carta.prototype.pelo = function() {
-    return this.pelo;
-};
-Carta.prototype.genero = function() {
-    return this.genero;
-};*/
 
 function rotate(card){
 	if(card.className == 'flip-card'){
@@ -40,9 +18,7 @@ function rotate(card){
 	}
 	if(card.id == 'elegida'){
 		card.parentNode.parentNode.classList.toggle('is-flipped');
-
 	}
-	
 }
 
 function checkMatch(){

@@ -62,6 +62,7 @@ img{
 	background-size: cover;
 	width: 120px;
 	height: 140px;
+	backface-visibility: hidden;
 }
 .flip-card .front-face, .flip-card .back-face, .flip-card .selected, .back-face-selected{
 	transition: transform 500ms;

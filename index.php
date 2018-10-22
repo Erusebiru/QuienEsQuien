@@ -33,18 +33,21 @@
 							<img src="Imagenes/<?=$rand?>" id="elegida" name="<?=$rand?>" gafas="<?=$seleccionada['gafas']?>" pelo="<?=$seleccionada['pelo']?>" genero="<?=$seleccionada['genero']?>">
 						</div>
 					</div>
-					<div id="formulario">
-						<?$preguntas = ["¿Tiene gafas?","¿Qué color de pelo tiene?","¿Qué genero es?"];
+					<div id="preguntas">
+						<?$caracter = ["Gafas:","Color de Pelo:","Genero:"];
 						echo "<form id='preguntas'>";
 							$num = 0;
-							foreach($config as $key => $carta){
-								?></br><select class="combo" id="<?=$key?>">";
-								<option selected="selected" disabled="true"><?=$preguntas[$num]?></option>;
-								<?foreach($carta as $value){?>
-									<option><?=$value?></option>;
-								<?}
-								$num++;?>
-								</select></br>
+							foreach ($config as $key => $carta) {
+								?><label><?=$caracter[$num]?></label>
+								</br><select class="combo" id="<?=$key?>">"
+								<option selected="selected" disabled="true">Selecciona una respuesta</option>
+								<?
+								foreach ($carta as $value) {
+									echo "<option>".$value."</option>";
+								}
+								$num++;
+								?>
+								</select></br></br>
 								
 							<?}?>
 						</form>

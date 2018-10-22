@@ -1,1 +1,1 @@
-Error: Característica no encontrada en el archivo config.txt
+﻿

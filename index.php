@@ -13,9 +13,9 @@
 		if($cartasText == false){ //Si hubiese un nombre de imágen duplicado daría error.
 			generarErrores(0);
 		}else if(!conf($cartasText,$config)){ //Si hubiese una característica de una carta que no exista en config, daría error.
-			generarErrores(1);
-		}else if(!equal($cartasText)){ //Si dos cartas tuvieran las mismas características, daría error.
 			generarErrores(2);
+		}else if(!equal($cartasText)){ //Si dos cartas tuvieran las mismas características, daría error.
+			generarErrores(1);
 		}else{	//Si no entrase en ninguno de los errores, cargaría la página
 			$keys = array_keys($cartasText);
 			shuffle($keys);
@@ -25,26 +25,31 @@
 			$rand = array_rand($cartas); //Barajamos las cartas y nos seleccionará la key de la carta
 			$seleccionada = $cartas[$rand]; //Sacamos las características de la carta
 			?>
-			<div id="cartaAsignada">
-				<img src="Imagenes/<?=$rand?>" id="<?=$rand?>" gafas="<?=$seleccionada['gafas']?>" pelo="<?=$seleccionada['pelo']?>" genero="<?$seleccionada['genero']?>">
-			</div>
 			<div id="container">
-				<div id="formulario">
-					<?
-						$preguntas = ["¿Su pelo es rubio?","¿Su pelo es castaño?","¿Su pelo es moreno?","¿Tiene gafas?","¿Es una Mujer?","¿Es un hombre?"];
-						$respuestas = ["Sí","No"];
+				<div id="left">
+					<div class="flip-card">
+						<div class="back-face-selected"></div>
+						<div class="selected">
+							<img src="Imagenes/<?=$rand?>" id="elegida" name="<?=$rand?>" gafas="<?=$seleccionada['gafas']?>" pelo="<?=$seleccionada['pelo']?>" genero="<?=$seleccionada['genero']?>">
+						</div>
+					</div>
+					<div id="formulario">
+						<?$preguntas = ["¿Tiene gafas?","¿Qué color de pelo tiene?","¿Qué genero es?"];
 						echo "<form id='preguntas'>";
-						for($i=0;$i<6;$i++){
-							echo "<br><select class='combo'>";
-							echo "<option selected='selected' disabled='true' value='".$preguntas[$i]."'>".$preguntas[$i]."</option>";
-							for($j=0;$j<2;$j++){
-								echo "<option value='".$respuestas[$j]."'>".$respuestas[$j]."</option>";
-							}
-							echo "</select><br>";
-						}
-						echo "</form>";
-						echo "<br><button onclick='workCombo()' id='preguntar'>Preguntar</button>";
-					?>
+							$num = 0;
+							foreach($config as $key => $carta){
+								?></br><select class="combo" id="<?=$key?>">";
+								<option selected="selected" disabled="true"><?=$preguntas[$num]?></option>;
+								<?foreach($carta as $value){?>
+									<option><?=$value?></option>;
+								<?}
+								$num++;?>
+								</select></br>
+								
+							<?}?>
+						</form>
+						<br><button onclick='workCombo()' id='preguntar'>Preguntar</button>
+					</div>
 				</div>
 
 				<div id="tablaCartas"><?
@@ -56,17 +61,11 @@
 						}
 						if($contador == 3){
 							echo "</tr>";
-							$contador= 0;
+							$contador = 0;
 						}
-						/*echo "<td>";
-							echo "<div class='flip-card' onclick='rotate(this)'>";
-								echo "<div class='front-face imagen'><img src='Imagenes/$key' id='".$key."' gafas='".$carta['gafas']."' pelo='".$carta['pelo']."' genero='".$carta['genero']."></div>";
-								echo "<div class='back-face'></div>";
-							echo "</div>";
-						echo "</td>";*/
 						?><td>
 							<div class="flip-card" onclick="rotate(this);">
-								<div class="front-face imagen"><img src="Imagenes/<?=$key?>"" id="<?=$key?>" gafas="<?=$carta['gafas']?>" pelo="<?=$carta['pelo']?>" genero="<?=$carta['genero']?>"></div>
+								<div class="front-face imagen"><img src="Imagenes/<?=$key?>" id="<?=$key?>" gafas="<?=$carta['gafas']?>" pelo="<?=$carta['pelo']?>" genero="<?=$carta['genero']?>"></div>
 								<div class="back-face"></div>
 							</div>
 						</td>
@@ -75,13 +74,19 @@
 					?>
 				</div>
 
-				<div id="ventanaError">
+				<div id="ventanaError" class="windowMessage">
 					<h3 id="textError"></h3>
 					<button id="cerrarVentana" onclick="closeWindow(this)">Cerrar</button>
 				</div>
+				<div id="ventanaRecord" class="windowMessage">
+					<h2>Guardar Record</h2>
+					<label for="nameRecord">Introduce tu nombre</label>
+					<input type="text" id="nameRecord">
+					<br><br>
+					<button>Enviar</button>
+				</div>
 			</div>
-				<?
-		}
+		<?}
 
 		//Función para crear el array de configuración
 		function specFile(){

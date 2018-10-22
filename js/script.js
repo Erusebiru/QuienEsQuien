@@ -1,40 +1,55 @@
 
-var cartas = [];
 var selectedItem;
-/*
-function Carta(imagen,gafas,pelo,genero){
-	this.imagen = imagen;
-	this.gafas = gafas;
-	this.pelo = pelo;
-	this.genero = genero;
-}
-
-
-Carta.prototype.imagen = function() {
-    return this.imagen;
-};
-Carta.prototype.gafas = function() {
-    return this.gafas;
-};
-Carta.prototype.pelo = function() {
-    return this.pelo;
-};
-Carta.prototype.genero = function() {
-    return this.genero;
-};*/
+var numPreguntas = 0;
+var numPreguntasInARow = 0;
+var cartasGiradas = 0;
+var cartasGiradasInARow = 0;
+var messageErrorDone = 0;
+var sound = new Audio('sounds/sonic.mp3');
 
 function rotate(card){
 	if(card.className == 'flip-card'){
 		card.classList.toggle('is-flipped');
+		//document.getElementById("ventanaRecord").style.display = "inline";
+		cartasGiradas++;
+		cartasGiradasInARow++;
+		messageErrorDone = 0;
+		sound.play();
+	}
+	if(card.id == 'elegida'){
+		card.parentNode.parentNode.classList.toggle('is-flipped');
+	}
+}
+
+function checkMatch(){
+	var elegida = document.getElementById("elegida");
+	if(elegida.getAttribute(selectedItem.id) == selectedItem.value){
+		alert("genial");
+		rotate(elegida);
+		return true;
+	}else{
+		alert("No tan genial");
+		return false;
 	}
 }
 
 function workCombo(){
 	var combos = document.getElementsByClassName("combo");
-	if(checkCombo(combos)){
-		selectedItem.disabled = true;
-		document.getElementById("texto").innerHTML = "Todo ok.";
+	if(cartasGiradasInARow == 0 && messageErrorDone == 1){
+		alert("No has girado ninguna carta");
+		messageErrorDone++;
+	}else{
+		if(checkCombo(combos)){
+			//Todo ok
+			numPreguntas++;
+			checkMatch();
+			messageErrorDone++;
+			if(cartasGiradasInARow > 0){
+				cartasGiradasInARow = 0;
+			}
+		}
 	}
+	
 	document.getElementById("preguntas").reset();
 }
 

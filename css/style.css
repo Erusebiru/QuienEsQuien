@@ -1,6 +1,6 @@
-#ventanaError{
+.windowMessage{
 	width: 350px;
-	height: 100px;
+	height: 150px;
 	position: absolute;
 	left: 35%;
 	z-index: 2;
@@ -8,34 +8,44 @@
 	border: 1px solid black;
 	text-align: center;
 	background-color: white;
-	padding: 20px;
+	padding: 15px;
 	display: none;
 	box-shadow: 0 0 10px #333;
 	border-radius: 12px;
+    animation-name: animatetop;
+    animation-duration: 0.6s
+}
+/* Add Animation */
+@keyframes animatetop {
+    from {top: -300px; opacity: 0}
+    to {top: 210px; opacity: 1}
 }
 
 img{
 	width: 120px;
 	height: 140px;
 }
-
 #container{
-	width: 70%;
+	width: 60%;
 	margin: 0 auto;
+	top: 0;
 }
+
+#left{
+	width: 20%;
+	margin-right: 100px;
+	float:left;
+}
+
 #formulario{
-	float: left;
 	margin: 30px;
 }
 #tablaCartas{
 	margin: 30px;
+	top: 0;
 }
 .combo{
 	width: 180px;
-}
-#cartaAsignada{
-	width: 6%;
-	margin: 0 auto;
 }
 
 .imagen:hover{
@@ -46,10 +56,15 @@ img{
 	transform: rotateY(180deg);
 	background-image: url('../Imagenes/reverso.jpeg');
 	background-size: cover;
+}
+.back-face-selected{
+	background-image: url('../Imagenes/reverso.jpeg');
+	background-size: cover;
 	width: 120px;
 	height: 140px;
+	backface-visibility: hidden;
 }
-.flip-card .front-face, .flip-card .back-face{
+.flip-card .front-face, .flip-card .back-face, .flip-card .selected, .back-face-selected{
 	transition: transform 500ms;
 	display: block;
 	height: 100%;
@@ -58,13 +73,22 @@ img{
 	backface-visibility: hidden;
 }
 .flip-card{
-
 	width: 120px;
 	height: 140px;
 	margin: 10px;
 	position: relative;
 }
 .flip-card.is-flipped{
+	transform: rotateY(180deg);
+	transition: transform 1s;
+	transform-style: preserve-3d;
+}
+
+.selected{
+	transform: rotateY(180deg);
+}
+
+.selected.is-flipped{
 	transform: rotateY(180deg);
 	transition: transform 1s;
 	transform-style: preserve-3d;

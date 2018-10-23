@@ -11,6 +11,7 @@ var bloqueo = 0;
 
 //Función para girar cartas
 function rotate(card){
+	//Parte de la función que girará las cartas del tablero
 	if(card.className == 'flip-card'){
 		card.classList.toggle('is-flipped');
 		//document.getElementById("ventanaRecord").style.display = "inline";
@@ -19,6 +20,8 @@ function rotate(card){
 		messageErrorDone = 0;
 		sound.play();
 	}
+
+	//Parte de la función que girará la carta asignada
 	if(card.id == 'elegida'){
 		card.parentNode.parentNode.classList.toggle('is-flipped');
 	}
@@ -30,12 +33,12 @@ function rotate(card){
 function checkMatch(){
 	var elegida = document.getElementById("elegida");
 	if(elegida.getAttribute(selectedItem.id) == selectedItem.value){
-		alert("genial");
+		//alert("genial");
 		win();
-		
+		document.querySelector("#countQuestions span").innerText = numPreguntas;
 		return true;
 	}else{
-		alert("No tan genial");
+		//alert("No tan genial");
 		return false;
 	}
 }
@@ -47,13 +50,15 @@ function win(){
 	modal.style.display = "block";    
 }
 
-/*var btn = document.getElementById("myBtn");
-btn.onclick = function() {
-	var modal = document.getElementById('myModal');
-    modal.style.display = "none";
-}*/
+function closeModal(div){
+	/*var modal = document.getElementById('myModal');
+	modal.style.display = "none";*/
+	var mod = document.querySelector(".modal-content");
+	mod.classList.toggle("collapsed");
 
-function workCombo(){
+}
+
+function workCombo(form){
 	var combos = document.getElementsByClassName("combo");
 	
 	if(cartasGiradasInARow == 0 && messageErrorDone == 1){
@@ -75,8 +80,7 @@ function workCombo(){
 			}
 		}
 	}
-	
-	document.getElementById("preguntas").reset();
+	form.reset();
 }
 
 /*

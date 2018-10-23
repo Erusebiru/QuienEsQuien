@@ -1,3 +1,9 @@
+body{
+	background-image: url(../Imagenes/bosque.jpg);
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
 .windowMessage{
 	width: 350px;
 	height: 150px;
@@ -22,13 +28,12 @@
 }
 
 img{
-	width: 120px;
-	height: 140px;
+	width: 100px;
+	height: 120px;
 }
 #container{
 	width: 60%;
 	margin: 0 auto;
-	top: 0;
 }
 
 #left{
@@ -37,13 +42,17 @@ img{
 	float:left;
 }
 
-#formulario{
-	margin: 30px;
+#preguntas{
+	margin-top: 40px;
 }
-#tablaCartas{
-	margin: 30px;
-	top: 0;
+
+.preguntaForm{
+	background-color: #282626;
+	color: white;
+	text-align: center;
+	width: 180px;
 }
+
 .combo{
 	width: 180px;
 }
@@ -56,12 +65,14 @@ img{
 	transform: rotateY(180deg);
 	background-image: url('../Imagenes/reverso.jpeg');
 	background-size: cover;
+	width: 100px;
+	height: 120px;
 }
 .back-face-selected{
 	background-image: url('../Imagenes/reverso.jpeg');
 	background-size: cover;
-	width: 120px;
-	height: 140px;
+	width: 100px;
+	height: 120px;
 	backface-visibility: hidden;
 }
 .flip-card .front-face, .flip-card .back-face, .flip-card .selected, .back-face-selected{
@@ -73,12 +84,12 @@ img{
 	backface-visibility: hidden;
 }
 .flip-card{
-	width: 120px;
-	height: 140px;
+	width: 100px;
+	height: 120px;
 	margin: 10px;
 	position: relative;
 }
-.flip-card.is-flipped{
+.flip-card.is-flipped, .selected.is-flipped{
 	transform: rotateY(180deg);
 	transition: transform 1s;
 	transform-style: preserve-3d;
@@ -86,12 +97,6 @@ img{
 
 .selected{
 	transform: rotateY(180deg);
-}
-
-.selected.is-flipped{
-	transform: rotateY(180deg);
-	transition: transform 1s;
-	transform-style: preserve-3d;
 }
 
 .modal {
@@ -105,5 +110,53 @@ img{
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    background-color: rgba(0,0,0,0.8); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 0 auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%; /* Could be more or less, depending on screen size */
+    height: auto;
+    max-height: 20px;
+	transition: max-height 2s ease-out;
+	overflow: hidden;
+	animation-name: animatetop;
+    animation-duration: 3s;
+	border-radius: 12px;
+
+}
+.modal-content.collapsed{
+	max-height: 400px;
+}
+
+#formHist{
+	width: 100%;
+	margin: 0 auto;
+}
+
+#inputName{
+	float: left;
+	margin-left: 5%;
+}
+
+#countQuestions{
+	float: right;
+	margin-right: 10%;
+}
+#record{
+	width: 30%;
+	margin: 0 auto;
+	text-align: center;
+}
+#tablaRecord{
+	border-collapse: collapse;
+}
+#tablaRecord td{
+	border: 1px solid black;
+	padding: 5px;
+	width: 100px;
+	text-align: center;
 }

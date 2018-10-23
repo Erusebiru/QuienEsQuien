@@ -9,6 +9,7 @@
 	<?	
 		$config = specFile(); //Creamos el array de características.
 		$cartasText = specConfig(); //Creamos el array con las cartas.
+		$ranking = specRanking();
 
 		if($cartasText == false){ //Si hubiese un nombre de imágen duplicado daría error.
 			generarErrores(0);
@@ -35,11 +36,11 @@
 					</div>
 					<div id="preguntas">
 						<?$caracter = ["Gafas:","Color de Pelo:","Genero:"];
-						echo "<form id='preguntas'>";
+						?><form id="preguntas"><?
 							$num = 0;
 							foreach ($config as $key => $carta) {
-								?><label><?=$caracter[$num]?></label>
-								</br><select class="combo" id="<?=$key?>">"
+								?><div class="preguntaForm"><?=$caracter[$num]?></div>
+								<select class="combo" id="<?=$key?>">"
 								<option selected="selected" disabled="true">Selecciona una respuesta</option>
 								<?
 								foreach ($carta as $value) {
@@ -50,8 +51,9 @@
 								</select></br></br>
 								
 							<?}?>
+							<button type="button" onclick='workCombo(this.form)' id='preguntar'>Preguntar</button>
 						</form>
-						<br><button onclick='workCombo()' id='preguntar'>Preguntar</button>
+						<br>
 					</div>
 				</div>
 
@@ -74,6 +76,7 @@
 						</td>
 						<?$contador++;
 					}
+					echo "</table>";
 					?>
 				</div>
 
@@ -87,6 +90,39 @@
 					<input type="text" id="nameRecord">
 					<br><br>
 					<button>Enviar</button>
+				</div>
+
+				<div id="myModal" class="modal">
+					<div class="modal-content">
+						<div id="formHist">
+							<form action="<? $_PHP_SELF ?>" method="GET">
+								<label id="inputName" for="inputName">Introduce tu nombre: <input type="text" name="playerName"></label>
+								<label id="countQuestions"><b>Número de intentos: <span></span></b></label>
+								<button type="button" id="myBtn" onclick="closeModal(this)">Enviar</button>
+							</form>
+							<div id="record">
+								<h3>Record de jugadores</h3>
+								
+								<table id='tablaRecord'>
+								<?
+									for($i=0;$i<10;$i++){
+										if(isset($ranking[$i])){
+											$rankingPersona = $ranking[$i];
+										}else{
+											$rankingPersona = ['-','-'];
+										}
+										?>
+											<tr>
+												<td><?=$rankingPersona[0]?></td>
+												<td><?=$rankingPersona[1]?></td>
+											</tr>
+										<?
+									}
+								?>
+								</table>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		<?}
@@ -149,6 +185,15 @@
 			return false;
 		}
 
+		function specRanking(){
+			$file = file("ranking.txt", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+			foreach($file as $linea){
+				$persona = explode(':',$linea);
+				$ranking[] = $persona;
+			}
+			return $ranking;
+		}
+
 		//Función para comprobar que la configuración de las imágenes no está repetida.
 		//Devolverá false si encuentra una repetida o true si está todo correcto.
 		function equal($cartasText){
@@ -190,18 +235,21 @@
 				//Un mismo nombre de imagen aparece dos veces en el archivo de configuracion
 				$nombreFichero = fopen("Errores/duplicadas.txt", "w");
 				fwrite($nombreFichero, "Error: El nombre de las cartas debe ser diferente");
+				echo "<h1>Error: El nombre de las cartas debe ser diferente</h1>";
 				fclose($nombreFichero);
 			}
 			else if($numError ==  1){
 				//Dos imagenes tienen las mismas caracteristicas
 				$mismasC= fopen("Errores/igualCaracteristicas.txt", "w");
 				fwrite($mismasC, "Error: Dos imagenes no pueden tener las mismas características entre si");
+				echo "<h1>Error: Dos imagenes no pueden tener las mismas características entre si</h1>";
 				fclose($mismasC);
 			}
 			else if($numError == 2){
 				//Una caracteristica no aparece en el fichero config.txt
 				$noFound= fopen("Errores/no_encontrada.txt", "w");
 				fwrite($noFound, "Error: Característica no encontrada en el archivo config.txt");
+				echo "<h1>Error: Característica no encontrada en el archivo config.txt</h1>";
 				fclose($noFound);
 			}
 		}

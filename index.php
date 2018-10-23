@@ -52,6 +52,7 @@
 							<?}?>
 						</form>
 						<br><button onclick='workCombo()' id='preguntar'>Preguntar</button>
+						<br><br><button id="easy" onclick="bloquearEasy()">Modo Easy</button>
 					</div>
 				</div>
 

@@ -6,6 +6,7 @@ var cartasGiradas = 0;
 var cartasGiradasInARow = 0;
 var messageErrorDone = 0;
 var sound = new Audio('sounds/sonic.mp3');
+var bloqueo = 0;
 
 
 //Función para girar cartas
@@ -54,11 +55,16 @@ btn.onclick = function() {
 
 function workCombo(){
 	var combos = document.getElementsByClassName("combo");
+	
 	if(cartasGiradasInARow == 0 && messageErrorDone == 1){
 		alert("No has girado ninguna carta");
 		messageErrorDone++;
 	}else{
 		if(checkCombo(combos)){
+			//desaparece boton easy
+			if (bloqueo==0){
+			document.getElementById("easy").style.display= "none";
+			}
 			//Todo ok
 			numPreguntas++;
 			checkMatch();
@@ -97,6 +103,13 @@ function checkCombo(combos){
 	}else{
 		return true;
 	}
+}
+
+
+//Ruben
+function bloquearEasy(){
+	bloqueo=1;
+	document.getElementById("easy").disabled= true;
 }
 
 //Función que cierra la ventana emergente de error

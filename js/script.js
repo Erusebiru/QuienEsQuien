@@ -67,6 +67,7 @@ function workCombo(){
 			}
 			//Todo ok
 			numPreguntas++;
+			document.getElementById("mostrarPregunta").innerHTML = numPreguntas;
 			checkMatch();
 			messageErrorDone++;
 			if(cartasGiradasInARow > 0){

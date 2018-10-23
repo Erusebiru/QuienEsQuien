@@ -54,6 +54,10 @@
 						<br><button onclick='workCombo()' id='preguntar'>Preguntar</button>
 						<br><br><button id="easy" onclick="bloquearEasy()">Modo Easy</button>
 					</div>
+					<div id="marcador">
+						<label>Numero de preguntas: </label>
+						<p id="mostrarPregunta">0</p>
+					</div>
 				</div>
 
 				<div id="tablaCartas"><?

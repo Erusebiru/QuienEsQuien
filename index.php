@@ -25,6 +25,7 @@
 			}
 			$rand = array_rand($cartas); //Barajamos las cartas y nos seleccionará la key de la carta
 			$seleccionada = $cartas[$rand]; //Sacamos las características de la carta
+			echo $rand;
 			?>
 			<div id="container">
 				<div id="left">
@@ -53,13 +54,22 @@
 							<?}?>
 							<button type="button" onclick='workCombo(this.form)' id='preguntar'>Preguntar</button>
 						</form>
-						<br>
-						<br><button onclick='workCombo()' id='preguntar'>Preguntar</button>
-						<br><br><button id="easy" onclick="bloquearEasy()">Modo Easy</button>
+						<br><button id="easy" onclick="bloquearEasy()">Modo Easy</button>
 					</div>
-					<div id="marcador">
-						<label>Numero de preguntas: </label>
-						<p id="mostrarPregunta">0</p>
+					<br>
+					<div id="marcador" class="respuesta">
+						Numero de preguntas:
+						<label id="mostrarPregunta">0</label>
+					</div>
+					<div class="container respuesta">
+						<div id="true">
+							<p>Correcto<img id="correcto" class="light" src="Imagenes/circle_green.png"></p>
+						</div>
+
+						<div id="false">
+							<p>Incorrecto<img id="error" class="light" src="Imagenes/circle.png"></p>
+						</div>
+
 					</div>
 				</div>
 
@@ -75,7 +85,7 @@
 							$contador = 0;
 						}
 						?><td>
-							<div class="flip-card" onclick="rotate(this);">
+							<div class="flip-card" name="front" onclick="rotate(this);">
 								<div class="front-face imagen"><img src="Imagenes/<?=$key?>" id="<?=$key?>" gafas="<?=$carta['gafas']?>" pelo="<?=$carta['pelo']?>" genero="<?=$carta['genero']?>"></div>
 								<div class="back-face"></div>
 							</div>

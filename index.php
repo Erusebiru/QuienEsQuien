@@ -9,7 +9,6 @@
 	<?	
 		$config = specFile(); //Creamos el array de características.
 		$cartasText = specConfig(); //Creamos el array con las cartas.
-		$ranking = specRanking();
 
 		if($cartasText == false){ //Si hubiese un nombre de imágen duplicado daría error.
 			generarErrores(0);
@@ -53,9 +52,7 @@
 							<?}?>
 							<button type="button" onclick='workCombo(this.form)' id='preguntar'>Preguntar</button>
 						</form>
-						<br>
-						<br><button onclick='workCombo()' id='preguntar'>Preguntar</button>
-						<br><br><button id="easy" onclick="bloquearEasy()">Modo Easy</button>
+						<br><button id="easy" onclick="bloquearEasy()">Modo Easy</button>
 					</div>
 				</div>
 
@@ -84,7 +81,7 @@
 
 				<div id="ventanaError" class="windowMessage">
 					<h3 id="textError"></h3>
-					<button id="cerrarVentana" onclick="closeWindow(this)">Cerrar</button>
+					<button id="cerrarVentana" onclick="closeWindowAlert(this)">Cerrar</button>
 				</div>
 				<div id="ventanaRecord" class="windowMessage">
 					<h2>Guardar Record</h2>
@@ -93,35 +90,52 @@
 					<br><br>
 					<button>Enviar</button>
 				</div>
-
+		
 				<div id="myModal" class="modal">
-					<div class="modal-content">
-						<div id="formHist">
-							<form action="<? $_PHP_SELF ?>" method="GET">
-								<label id="inputName" for="inputName">Introduce tu nombre: <input type="text" name="playerName"></label>
-								<label id="countQuestions"><b>Número de intentos: <span></span></b></label>
-								<button type="button" id="myBtn" onclick="closeModal(this)">Enviar</button>
-							</form>
+					<div class="modal-content" name="formRanking">
+						<div id="RankWindow">
+							<div id="otherRank">
+								<h2>¡Has ganado!</h2>
+								<span>¿Deseas guardar tus datos?</span>
+								<button onclick="openModal()">Sí</button>
+								<button onclick="closeWindow()">No</button>
+								<br><br>
+							</div>
+							<div id="formRank">
+								<div id="hiddenForm">
+									<form target="transFrame" method="POST" class="EditName" id="reportEdit" action="load.php">
+									<h3>Introduce tus datos</h3><br>
+									<div id="inputName"><label  for="inputName">Introduce tu nombre: <input type="text" name="transDesc"></label></div>
+									
+									<input type="hidden" id="custId" name="pwd" value="">
+									<label id="countQuestions"><b>Número de intentos: <span></span></b></label>
+									<input type="submit" name="submit" value="Submit" onclick="sendForm()"/>
+								</div>
+									<div id="shownForm">
+										<h3>Mostrar ranking</h3>
+										<input type="submit" name="submit" value="Mostrar Ranking" onclick="sendForm2(this)"/>
+										<br><br>
+									</div>
+								</form>
+								<iframe name="transFrame" id="transFrame">yjd</iframe>
+							</div>
+							
 							<div id="record">
 								<h3>Record de jugadores</h3>
 								
 								<table id='tablaRecord'>
 								<?
 									for($i=0;$i<10;$i++){
-										if(isset($ranking[$i])){
-											$rankingPersona = $ranking[$i];
-										}else{
-											$rankingPersona = ['-','-'];
-										}
 										?>
 											<tr>
-												<td><?=$rankingPersona[0]?></td>
-												<td><?=$rankingPersona[1]?></td>
+												<td></td>
+												<td></td>
 											</tr>
 										<?
 									}
 								?>
 								</table>
+								<br><button onclick="closeWindow()">Reiniciar</button>
 							</div>
 						</div>
 					</div>
@@ -193,7 +207,11 @@
 				$persona = explode(':',$linea);
 				$ranking[] = $persona;
 			}
-			return $ranking;
+			if($ranking = ""){
+				return;
+			}else{
+				return $ranking;
+			}
 		}
 
 		//Función para comprobar que la configuración de las imágenes no está repetida.

@@ -36,6 +36,7 @@ function checkMatch(){
 		//alert("genial");
 		win();
 		document.querySelector("#countQuestions span").innerText = numPreguntas;
+		document.querySelector('input[name="pwd"]').value = numPreguntas;
 		return true;
 	}else{
 		//alert("No tan genial");
@@ -48,14 +49,6 @@ function win(){
 	rotate(elegida);
 	var modal = document.getElementById('myModal');
 	modal.style.display = "block";    
-}
-
-function closeModal(div){
-	/*var modal = document.getElementById('myModal');
-	modal.style.display = "none";*/
-	var mod = document.querySelector(".modal-content");
-	mod.classList.toggle("collapsed");
-
 }
 
 function workCombo(form){
@@ -116,8 +109,48 @@ function bloquearEasy(){
 	document.getElementById("easy").disabled= true;
 }
 
-//Función que cierra la ventana emergente de error
-function closeWindow(button){
+function openModal(){
 	
+	document.getElementById("otherRank").style.display = "none";
+	document.getElementById("formRank").style.display = "inline";
+	window.frames['transFrame'].src = "load.php";
+	
+}
+
+//Función que cierra la ventana emergente de error
+function closeWindow(){
+	document.querySelector("#myModal").style.display = "none";
+	location.reload();
+}
+
+function closeWindowAlert(button){
 	button.parentNode.style.display = "none";
+}
+
+function loadData(){
+	
+	var elementsFrame = window.frames['transFrame'].document.getElementsByClassName("fila");
+	var elementoActual = document.querySelectorAll("#tablaRecord tr");
+
+	for(var i=0;i<elementoActual.length;i++){
+		if(elementsFrame[i].childNodes[1].textContent != "" | elementsFrame[i].childNodes[3].textContent != ""){
+			elementoActual[i].childNodes[1].innerHTML = elementsFrame[i].childNodes[1].textContent;
+			elementoActual[i].childNodes[3].innerHTML = elementsFrame[i].childNodes[3].textContent;
+		}
+	}
+	return
+}
+
+function sendForm(){
+	document.getElementById("shownForm").style.display = "inline";
+	document.getElementById("hiddenForm").style.display = "none";
+
+	loadData();
+}
+
+function sendForm2(button){
+	button.disabled = true;
+	var mod = document.querySelector(".modal-content");
+	mod.classList.toggle("collapsed");
+	loadData();
 }

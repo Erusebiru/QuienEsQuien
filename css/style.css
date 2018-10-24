@@ -6,7 +6,7 @@ body{
 
 .windowMessage{
 	width: 350px;
-	height: 150px;
+	height: 100px;
 	position: absolute;
 	left: 35%;
 	z-index: 2;
@@ -31,8 +31,11 @@ img{
 	width: 100px;
 	height: 120px;
 }
+button{
+	width: 90px;
+}
 #container{
-	width: 60%;
+	width: 80%;
 	margin: 0 auto;
 }
 
@@ -103,7 +106,7 @@ img{
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
+    padding-top: 50px; /* Location of the box */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
@@ -116,24 +119,45 @@ img{
 .modal-content {
     background-color: #fefefe;
     margin: 0 auto; /* 15% from the top and centered */
-    padding: 20px;
+    margin-left: 25%;
     border: 1px solid #888;
-    width: 50%; /* Could be more or less, depending on screen size */
+    width: 65%; /* Could be more or less, depending on screen size */
     height: auto;
-    max-height: 20px;
+    max-height: 120px;
 	transition: max-height 2s ease-out;
 	overflow: hidden;
 	animation-name: animatetop;
     animation-duration: 3s;
 	border-radius: 12px;
+}
 
+
+iframe{
+	display: none;
 }
 .modal-content.collapsed{
-	max-height: 400px;
+	max-height: 600px;
 }
 
-#formHist{
+#RankWindow{
 	width: 100%;
+	margin: 0 auto;
+}
+
+#formRank{
+	display:none;
+	text-align: center;
+}
+#otherRank{
+	display:inline;
+	width: 80%;
+	margin: 0 auto;
+	top: 0;
+}
+
+#shownForm{
+	display: none;
+	width: 80%;
 	margin: 0 auto;
 }
 
@@ -153,10 +177,12 @@ img{
 }
 #tablaRecord{
 	border-collapse: collapse;
+	margin-left: 20px;
 }
 #tablaRecord td{
 	border: 1px solid black;
 	padding: 5px;
 	width: 100px;
 	text-align: center;
+
 }

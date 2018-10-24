@@ -55,6 +55,10 @@ button{
 	text-align: center;
 	width: 180px;
 }
+.respuesta{
+	background-color: #282626;
+	color: white;
+}
 
 .combo{
 	width: 180px;
@@ -150,9 +154,8 @@ iframe{
 }
 #otherRank{
 	display:inline;
-	width: 80%;
+	width: 50%;
 	margin: 0 auto;
-	top: 0;
 }
 
 #shownForm{
@@ -184,5 +187,28 @@ iframe{
 	padding: 5px;
 	width: 100px;
 	text-align: center;
+}
+#true,#false{
+	display: none;
+}
 
+@-moz-keyframes blink{
+	0%{opacity: 0;}
+	50%{opacity: .5;}
+	100%{opacity: 1;}
+}
+
+@keyframes blink{
+	0%{opacity: 0;}
+	50%{opacity: .5;}
+	100%{opacity: 1;}
+}
+
+.light {
+	margin-left: 15px;
+	width: 30px;
+	height: 30px;
+    -moz-animation: blink normal 1s infinite ease-in-out; /* Firefox */
+    animation: blink normal 1s infinite ease-in-out;
+    animation: blink 1s linear infinite;
 }

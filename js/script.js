@@ -14,8 +14,13 @@ function rotate(card){
 	//Parte de la función que girará las cartas del tablero
 	if(card.className == 'flip-card'){
 		card.classList.toggle('is-flipped');
+		card.setAttribute('name','girada');
 		//document.getElementById("ventanaRecord").style.display = "inline";
 		cartasGiradas++;
+		console.log(cartasGiradas);
+		if(cartasGiradas==11){
+			endOfGame();
+		}
 		cartasGiradasInARow++;
 		messageErrorDone = 0;
 		sound.play();
@@ -35,10 +40,12 @@ function checkMatch(){
 	if(elegida.getAttribute(selectedItem.id) == selectedItem.value){
 		//alert("genial");
 		win();
+		showLight(0);
 		document.querySelector("#countQuestions span").innerText = numPreguntas;
 		document.querySelector('input[name="pwd"]').value = numPreguntas;
 		return true;
 	}else{
+		showLight(1);
 		//alert("No tan genial");
 		return false;
 	}
@@ -48,7 +55,7 @@ function checkMatch(){
 function win(){
 	rotate(elegida);
 	var modal = document.getElementById('myModal');
-	modal.style.display = "block";    
+	modal.style.display = "block"; 
 }
 
 function workCombo(form){
@@ -65,6 +72,7 @@ function workCombo(form){
 			}
 			//Todo ok
 			numPreguntas++;
+			document.getElementById("mostrarPregunta").innerHTML = numPreguntas;
 			checkMatch();
 			messageErrorDone++;
 			if(cartasGiradasInARow > 0){
@@ -126,7 +134,6 @@ function closeWindow(){
 function closeWindowAlert(button){
 	button.parentNode.style.display = "none";
 }
-
 function loadData(){
 	
 	var elementsFrame = window.frames['transFrame'].document.getElementsByClassName("fila");
@@ -153,4 +160,30 @@ function sendForm2(button){
 	var mod = document.querySelector(".modal-content");
 	mod.classList.toggle("collapsed");
 	loadData();
+}
+
+function endOfGame(){
+	var final = document.getElementsByName('front')[0];
+	console.log(final);
+	var carta_seleccionada =  document.getElementById('elegida');
+	console.log(carta_seleccionada.src)
+	if(final.childNodes[1].firstChild.src == carta_seleccionada.src ){
+		alert('ganaste');
+		//Pon el codigo de ranking y preguntar nombre aqui
+		win()
+	}else{
+		alert('perdiste');
+	}
+}
+
+function showLight(num){
+	document.getElementById('true').style.display = "none";
+	document.getElementById('false').style.display = "none";
+
+	if (num == 0){
+		document.getElementById('true').style.display = "inline";
+	}
+	else{
+		document.getElementById('false').style.display = "inline";
+	}
 }

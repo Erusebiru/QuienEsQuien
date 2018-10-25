@@ -26,7 +26,10 @@
 			$seleccionada = $cartas[$rand]; //Sacamos las características de la carta
 			echo $rand;
 			?>
+			<canvas id="canvas"></canvas>
 			<div id="container">
+
+				
 				<div id="left">
 					<div class="flip-card">
 						<div class="back-face-selected"></div>
@@ -52,6 +55,7 @@
 							<?}?>
 							<button type="button" onclick='workCombo(this.form)' id='preguntar'>Preguntar</button>
 						</form>
+						<br><button id="showRanking" onclick="showRanking()">Mostrar Ranking</button><br>
 						<br><button id="easy" onclick="bloquearEasy()">Modo Easy</button>
 					</div>
 					<br>
@@ -98,13 +102,6 @@
 					<h3 id="textError"></h3>
 					<button id="cerrarVentana" onclick="closeWindowAlert(this)">Cerrar</button>
 				</div>
-				<div id="ventanaRecord" class="windowMessage">
-					<h2>Guardar Record</h2>
-					<label for="nameRecord">Introduce tu nombre</label>
-					<input type="text" id="nameRecord">
-					<br><br>
-					<button>Enviar</button>
-				</div>
 		
 				<div id="myModal" class="modal">
 					<div class="modal-content" name="formRanking">
@@ -113,22 +110,26 @@
 								<h2>¡Has ganado!</h2>
 								<span>¿Deseas guardar tus datos?</span>
 								<button onclick="openModal()">Sí</button>
-								<button onclick="closeWindow()">No</button>
+								<button onclick="closeWindow(1)">No</button>
 								<br><br>
 							</div>
 							<div id="formRank">
-								<div id="hiddenForm">
-									<form target="transFrame" method="POST" class="EditName" id="reportEdit" action="load.php">
-									<h3>Introduce tus datos</h3><br>
-									<div id="inputName"><label  for="inputName">Introduce tu nombre: <input type="text" name="transDesc"></label></div>
-									
-									<input type="hidden" id="custId" name="pwd" value="">
-									<label id="countQuestions"><b>Número de intentos: <span></span></b></label>
-									<input type="submit" name="submit" value="Submit" onclick="sendForm()"/>
-								</div>
+								<form target="transFrame" method="POST" class="EditName" id="reportEdit" action="load.php">
+									<div id="hiddenForm">
+										<h3>Introduce tus datos</h3>
+										<div id="inputName">
+											<label  for="inputName">Introduce tu nombre: <input type="text" name="transDesc"></label>
+										
+											<input type="hidden" id="custId" name="pwd" value="0">
+											<label id="countQuestions"><b>Puntuación: <span>0</span></b></label>
+											<br><br>
+											<input type="submit" name="submit" value="Submit" onclick="sendForm()"/>
+										</div>
+									</div>
 									<div id="shownForm">
 										<h3>Mostrar ranking</h3>
 										<input type="submit" name="submit" value="Mostrar Ranking" onclick="sendForm2(this)"/>
+										<button id="reiniciarJuego" onclick="closeWindow(1)">Reiniciar</button>
 										<br><br>
 									</div>
 								</form>
@@ -140,17 +141,22 @@
 								
 								<table id='tablaRecord'>
 								<?
+									$ranking = specRanking();
 									for($i=0;$i<10;$i++){
-										?>
-											<tr>
-												<td></td>
-												<td></td>
-											</tr>
-										<?
-									}
-								?>
+										if(isset($ranking[$i])){
+											$rankingPersona = $ranking[$i];
+										}else{
+											$rankingPersona = ['-','-'];
+										}
+									?>
+										<tr class="fila">
+											<td><?=$rankingPersona[0]?></td>
+											<td><?=$rankingPersona[1]?></td>
+										</tr>
+									<?}?>
 								</table>
-								<br><button onclick="closeWindow()">Reiniciar</button>
+								<br><button id="cerrarRanking" onclick="closeWindow(0)">Cerrar ventana</button>
+								<br>
 							</div>
 						</div>
 					</div>
@@ -217,16 +223,32 @@
 		}
 
 		function specRanking(){
+			$ranking = [];
 			$file = file("ranking.txt", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 			foreach($file as $linea){
 				$persona = explode(':',$linea);
 				$ranking[] = $persona;
 			}
-			if($ranking = ""){
-				return;
-			}else{
-				return $ranking;
+			if(null !== $ranking){
+				$j=0;
+				$flag = true;
+				$temp=0;
+
+				while ( $flag ){
+	  				$flag = false;
+	  				for( $j=0;  $j < count($ranking)-1; $j++){
+	    				if ( $ranking[$j][1] > $ranking[$j+1][1] ){
+	      					$temp = $ranking[$j];
+	      					//swap the two between each other
+	      					$ranking[$j] = $ranking[$j+1];
+	      					$ranking[$j+1]=$temp;
+	      					$flag = true; //show that a swap occurred
+						}
+	  				}
+				}
 			}
+			
+			return $ranking;
 		}
 
 		//Función para comprobar que la configuración de las imágenes no está repetida.

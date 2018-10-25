@@ -30,13 +30,15 @@ body{
 img{
 	width: 100px;
 	height: 120px;
+	border-radius: 5px;
 }
 button{
-	width: 90px;
+	width: 120px;
 }
 #container{
 	width: 80%;
 	margin: 0 auto;
+	z-index: -1;
 }
 
 #left{
@@ -74,6 +76,7 @@ button{
 	background-size: cover;
 	width: 100px;
 	height: 120px;
+	border-radius: 5px;
 }
 .back-face-selected{
 	background-image: url('../Imagenes/reverso.jpeg');
@@ -81,6 +84,7 @@ button{
 	width: 100px;
 	height: 120px;
 	backface-visibility: hidden;
+	border-radius: 5px;
 }
 .flip-card .front-face, .flip-card .back-face, .flip-card .selected, .back-face-selected{
 	transition: transform 500ms;
@@ -109,7 +113,7 @@ button{
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    z-index: 99; /* Sit on top */
     padding-top: 50px; /* Location of the box */
     left: 0;
     top: 0;
@@ -117,10 +121,11 @@ button{
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.8); /* Black w/ opacity */
+    background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
 }
 
 .modal-content {
+	padding: 0 0 20px 0;
     background-color: #fefefe;
     margin: 0 auto; /* 15% from the top and centered */
     margin-left: 25%;
@@ -135,7 +140,6 @@ button{
 	border-radius: 12px;
 }
 
-
 iframe{
 	display: none;
 }
@@ -144,23 +148,33 @@ iframe{
 }
 
 #RankWindow{
-	width: 100%;
+	width: 80%;
 	margin: 0 auto;
 }
 
-#formRank{
-	display:none;
-	text-align: center;
-}
 #otherRank{
-	display:inline;
-	width: 50%;
+	display:block;
+	width: 80%;
+	margin: 10px auto;
+}
+#formRank{
+	display: none;
+	text-align: center;
+	width: 90%;
 	margin: 0 auto;
+}
+
+#hiddenForm{
+	display: none;
+}
+
+#countQuestions{
+	margin-left: 30px;
 }
 
 #shownForm{
 	display: none;
-	width: 80%;
+	width: 50%;
 	margin: 0 auto;
 }
 
@@ -169,18 +183,15 @@ iframe{
 	margin-left: 5%;
 }
 
-#countQuestions{
-	float: right;
-	margin-right: 10%;
-}
 #record{
-	width: 30%;
+	width: 38%;
 	margin: 0 auto;
 	text-align: center;
+	display: none;
 }
 #tablaRecord{
 	border-collapse: collapse;
-	margin-left: 20px;
+	margin-left: 40px;
 }
 #tablaRecord td{
 	border: 1px solid black;
@@ -211,4 +222,12 @@ iframe{
     -moz-animation: blink normal 1s infinite ease-in-out; /* Firefox */
     animation: blink normal 1s infinite ease-in-out;
     animation: blink 1s linear infinite;
+}
+
+#canvas{
+	position: absolute;
+	display: none;
+	z-index: 10;
+	left: 0;
+	top: 0;
 }

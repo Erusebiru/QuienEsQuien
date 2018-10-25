@@ -42,6 +42,24 @@
 				foreach($file as $linea){
 					$persona = explode(':',$linea);
 					$ranking[] = $persona;
+					//$ranking[$persona[0]] = $persona[1];
+				}
+
+				$j=0;
+				$flag = true;
+				$temp=0;
+
+				while ( $flag ){
+	  				$flag = false;
+	  				for( $j=0;  $j < count($ranking)-1; $j++){
+	    				if ( $ranking[$j][1] > $ranking[$j+1][1] ){
+	      					$temp = $ranking[$j];
+	      					//swap the two between each other
+	      					$ranking[$j] = $ranking[$j+1];
+	      					$ranking[$j+1]=$temp;
+	      					$flag = true; //show that a swap occurred
+						}
+	  				}
 				}
 				return $ranking;
 			}

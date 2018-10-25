@@ -1,1 +1,1 @@
-Error: Dos imagenes no pueden tener las mismas características entre si
+﻿

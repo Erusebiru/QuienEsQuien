@@ -24,8 +24,12 @@
 			}
 			$rand = array_rand($cartas); //Barajamos las cartas y nos seleccionará la key de la carta
 			$seleccionada = $cartas[$rand]; //Sacamos las características de la carta
+			echo $rand;
 			?>
+			<canvas id="canvas"></canvas>
 			<div id="container">
+
+				
 				<div id="left">
 					<div class="flip-card">
 						<div class="back-face-selected"></div>
@@ -33,22 +37,41 @@
 							<img src="Imagenes/<?=$rand?>" id="elegida" name="<?=$rand?>" gafas="<?=$seleccionada['gafas']?>" pelo="<?=$seleccionada['pelo']?>" genero="<?=$seleccionada['genero']?>">
 						</div>
 					</div>
-					<div id="formulario">
-						<?$preguntas = ["¿Tiene gafas?","¿Qué color de pelo tiene?","¿Qué genero es?"];
-						echo "<form id='preguntas'>";
+					<div id="preguntas">
+						<?$caracter = ["Gafas:","Color de Pelo:","Genero:"];
+						?><form id="preguntas"><?
 							$num = 0;
-							foreach($config as $key => $carta){
-								?></br><select class="combo" id="<?=$key?>">";
-								<option selected="selected" disabled="true"><?=$preguntas[$num]?></option>;
-								<?foreach($carta as $value){?>
-									<option><?=$value?></option>;
-								<?}
-								$num++;?>
-								</select></br>
-								
+							foreach ($config as $key => $carta) {
+								?><div class="preguntaForm"><?=$caracter[$num]?></div>
+								<select class="combo" id="<?=$key?>">"
+								<option selected="selected" disabled="true">Selecciona una respuesta</option>
+								<?
+								foreach ($carta as $value) {
+									echo "<option>".$value."</option>";
+								}
+								$num++;
+								?>
+								</select></br></br>
 							<?}?>
+							<button type="button" onclick='workCombo(this.form)' id='preguntar'>Preguntar</button>
 						</form>
-						<br><button onclick='workCombo()' id='preguntar'>Preguntar</button>
+						<br><button id="showRanking" onclick="showRanking()">Mostrar Ranking</button><br>
+						<br><button id="easy" onclick="bloquearEasy()">Modo Easy</button>
+					</div>
+					<br>
+					<div id="marcador" class="preguntaForm">
+						
+						Numero de preguntas: <label id="mostrarPregunta">0</label>
+					</div>
+					<div class="preguntaForm">
+						<div id="true">
+							Correcto<img id="correcto" class="light" src="Imagenes/circle_green.png">
+						</div>
+
+						<div id="false">
+							Incorrecto<img id="error" class="light" src="Imagenes/circle.png">
+						</div>
+
 					</div>
 				</div>
 
@@ -64,26 +87,80 @@
 							$contador = 0;
 						}
 						?><td>
-							<div class="flip-card" onclick="rotate(this);">
+							<div class="flip-card" name="front" onclick="rotate(this);">
 								<div class="front-face imagen"><img src="Imagenes/<?=$key?>" id="<?=$key?>" gafas="<?=$carta['gafas']?>" pelo="<?=$carta['pelo']?>" genero="<?=$carta['genero']?>"></div>
 								<div class="back-face"></div>
 							</div>
 						</td>
 						<?$contador++;
 					}
+					echo "</table>";
 					?>
 				</div>
 
 				<div id="ventanaError" class="windowMessage">
 					<h3 id="textError"></h3>
-					<button id="cerrarVentana" onclick="closeWindow(this)">Cerrar</button>
+					<button id="cerrarVentana" onclick="closeWindowAlert(this)">Cerrar</button>
 				</div>
-				<div id="ventanaRecord" class="windowMessage">
-					<h2>Guardar Record</h2>
-					<label for="nameRecord">Introduce tu nombre</label>
-					<input type="text" id="nameRecord">
-					<br><br>
-					<button>Enviar</button>
+		
+				<div id="myModal" class="modal">
+					<div class="modal-content" name="formRanking">
+						<div id="RankWindow">
+							<div id="otherRank">
+								<h2>¡Has ganado!</h2>
+								<span>¿Deseas guardar tus datos?</span>
+								<button onclick="openModal()">Sí</button>
+								<button onclick="closeWindow(1)">No</button>
+								<br><br>
+							</div>
+							<div id="formRank">
+								<form target="transFrame" method="POST" class="EditName" id="reportEdit" action="load.php">
+									<div id="hiddenForm">
+										<h3>Introduce tus datos</h3>
+										<div id="inputName">
+											<label  for="inputName">Introduce tu nombre: <input type="text" name="transDesc"></label>
+										
+											<input type="hidden" id="custId" name="pwd" value="0">
+											<label id="countQuestions"><b>Puntuación: <span>0</span></b></label>
+											<br><br>
+											<input type="submit" name="submit" value="Submit" onclick="sendForm()"/>
+										</div>
+									</div>
+								</form>
+									<div id="shownForm">
+										<h3>Mostrar ranking</h3>
+										<input type="submit" name="submit" value="Mostrar Ranking" onclick="sendForm2(this)"/>
+										<button id="reiniciarJuego" onclick="closeWindow(1)">Reiniciar</button>
+										<br><br>
+									</div>
+								
+								<iframe name="transFrame" id="transFrame">yjd</iframe>
+							</div>
+							
+							<div id="record">
+								<h3>Record de jugadores</h3>
+								
+								<table id='tablaRecord'>
+								<?
+									$ranking = specRanking();
+									for($i=0;$i<10;$i++){
+										if(isset($ranking[$i])){
+											$rankingPersona = $ranking[$i];
+										}else{
+											$rankingPersona = ['-','-'];
+										}
+									?>
+										<tr class="fila">
+											<td><?=$rankingPersona[0]?></td>
+											<td><?=$rankingPersona[1]?></td>
+										</tr>
+									<?}?>
+								</table>
+								<br><button id="cerrarRanking" onclick="closeWindow(0)">Cerrar ventana</button>
+								<br>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		<?}
@@ -146,6 +223,35 @@
 			return false;
 		}
 
+		function specRanking(){
+			$ranking = [];
+			$file = file("ranking.txt", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+			foreach($file as $linea){
+				$persona = explode(':',$linea);
+				$ranking[] = $persona;
+			}
+			if(null !== $ranking){
+				$j=0;
+				$flag = true;
+				$temp=0;
+
+				while ( $flag ){
+	  				$flag = false;
+	  				for( $j=0;  $j < count($ranking)-1; $j++){
+	    				if ( $ranking[$j][1] > $ranking[$j+1][1] ){
+	      					$temp = $ranking[$j];
+	      					//swap the two between each other
+	      					$ranking[$j] = $ranking[$j+1];
+	      					$ranking[$j+1]=$temp;
+	      					$flag = true; //show that a swap occurred
+						}
+	  				}
+				}
+			}
+			
+			return $ranking;
+		}
+
 		//Función para comprobar que la configuración de las imágenes no está repetida.
 		//Devolverá false si encuentra una repetida o true si está todo correcto.
 		function equal($cartasText){
@@ -187,18 +293,21 @@
 				//Un mismo nombre de imagen aparece dos veces en el archivo de configuracion
 				$nombreFichero = fopen("Errores/duplicadas.txt", "w");
 				fwrite($nombreFichero, "Error: El nombre de las cartas debe ser diferente");
+				echo "<h1>Error: El nombre de las cartas debe ser diferente</h1>";
 				fclose($nombreFichero);
 			}
 			else if($numError ==  1){
 				//Dos imagenes tienen las mismas caracteristicas
 				$mismasC= fopen("Errores/igualCaracteristicas.txt", "w");
 				fwrite($mismasC, "Error: Dos imagenes no pueden tener las mismas características entre si");
+				echo "<h1>Error: Dos imagenes no pueden tener las mismas características entre si</h1>";
 				fclose($mismasC);
 			}
 			else if($numError == 2){
 				//Una caracteristica no aparece en el fichero config.txt
 				$noFound= fopen("Errores/no_encontrada.txt", "w");
 				fwrite($noFound, "Error: Característica no encontrada en el archivo config.txt");
+				echo "<h1>Error: Característica no encontrada en el archivo config.txt</h1>";
 				fclose($noFound);
 			}
 		}

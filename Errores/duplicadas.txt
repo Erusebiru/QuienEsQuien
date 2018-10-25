@@ -1,1 +1,0 @@
-Error: El nombre de las cartas debe ser diferente

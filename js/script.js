@@ -120,7 +120,6 @@ function checkCombo(combos){
 	}
 }
 
-
 //Ruben
 function bloquearEasy(){
 	bloqueo=1;
@@ -166,8 +165,6 @@ function loadData(){
 function sendForm(){
 	document.getElementById("shownForm").style.display = "block";
 	document.getElementById("hiddenForm").style.display = "none";
-
-	//loadData();
 }
 
 function sendForm2(button){

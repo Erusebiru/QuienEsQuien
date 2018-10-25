@@ -1,13 +1,3 @@
-asdf:0
-asdf:0
-asdf:0
-asdf:1
-asdf:0
-asdf:0
-Ruben:0
-Ruben:0
-Ruben:0
-Ruben:0
-Alba:0
 Jose:0
-asdf:0
+Ruben:1
+Ruben:2

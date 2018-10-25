@@ -126,13 +126,14 @@
 											<input type="submit" name="submit" value="Submit" onclick="sendForm()"/>
 										</div>
 									</div>
+								</form>
 									<div id="shownForm">
 										<h3>Mostrar ranking</h3>
 										<input type="submit" name="submit" value="Mostrar Ranking" onclick="sendForm2(this)"/>
 										<button id="reiniciarJuego" onclick="closeWindow(1)">Reiniciar</button>
 										<br><br>
 									</div>
-								</form>
+								
 								<iframe name="transFrame" id="transFrame">yjd</iframe>
 							</div>
 							

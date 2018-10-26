@@ -54,7 +54,7 @@
 							$num = 0;
 							foreach ($config as $key => $carta) {
 								?><div class="preguntaForm"><?=$caracter[$num]?></div>
-								<select class="combo" id="<?=$key?>">"
+								<select class="combo" id="<?=$key?>" onchange="habilitarPregunta()">
 								<option selected="selected" disabled="true">Selecciona una respuesta</option>
 								<?
 								foreach ($carta as $value) {
@@ -64,7 +64,7 @@
 								?>
 								</select></br></br>
 							<?}?>
-							<button type="button" onclick='workCombo(this.form)' id='preguntar'>Preguntar</button>
+							<button type="button" onclick='workCombo(this.form)' id='preguntar' disabled>Preguntar</button>
 						</form>
 						<br><button id="showRanking" onclick="showRanking()">Mostrar Ranking</button><br>
 						<br><button id="easy" onclick="bloquearEasy()">Modo Easy</button>

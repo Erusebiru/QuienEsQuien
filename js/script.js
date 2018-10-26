@@ -9,11 +9,18 @@ var giro = new Audio('sounds/sonic.mp3');
 var perder = new Audio('sounds/pacman-dies.mp3');
 var ganar = new Audio('sounds/super-mario-castle-bros.mp3');
 var bloqueo = 0;
+var modoEasy = "desactivado";
 
 var canvas, width, height, ctx;
 var fireworks = [];
 var particles = [];
 
+
+function checkRotate(card){
+	if(modoEasy != "activado"){
+		rotate(card);
+	}
+}
 
 //Función para girar cartas
 function rotate(card){
@@ -23,7 +30,6 @@ function rotate(card){
 		card.setAttribute('name','girada');
 		//document.getElementById("ventanaRecord").style.display = "inline";
 		cartasGiradas++;
-		console.log(cartasGiradas);
 		if(cartasGiradas==11){
 			endOfGame();
 		}
@@ -43,12 +49,15 @@ function rotate(card){
 */
 function checkMatch(){
 	var elegida = document.getElementById("elegida");
+	var atributo = selectedItem.id
 	document.querySelector("#countQuestions span").innerText = numPreguntas;
 	document.querySelector('input[name="pwd"]').value = numPreguntas;
-	if(elegida.getAttribute(selectedItem.id) == selectedItem.value){
-		//win();
+	if(elegida.getAttribute(atributo) == selectedItem.value){
 		//Pregunta acertada
 		showLight(0);
+		if(modoEasy == "activado"){
+			easy(elegida,selectedItem,atributo);
+		}
 		return true;
 	}else{
 
@@ -132,7 +141,8 @@ function checkCombo(combos){
 }
 
 //Ruben
-function bloquearEasy(){
+function desactivarGiro(){
+	modoEasy = "activado";
 	bloqueo=1;
 	document.getElementById("easy").disabled= true;
 }
@@ -370,4 +380,12 @@ function fondo(){
 
 function habilitarPregunta(){
 	document.getElementById('preguntar').disabled = false;
+}
+
+function easy(elegida,selectedItem,atributo){
+	/*var cards = document.querySelectorAll(".select");
+	for(var i=0;i<cards.length;i++){
+		if(cards)
+	}
+	alert(selectedItem.value+" "+atributo);*/
 }

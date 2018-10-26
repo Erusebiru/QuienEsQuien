@@ -67,7 +67,7 @@
 							<button type="button" onclick='workCombo(this.form)' id='preguntar' disabled>Preguntar</button>
 						</form>
 						<br><button id="showRanking" onclick="showRanking()">Mostrar Ranking</button><br>
-						<br><button id="easy" onclick="bloquearEasy()">Modo Easy</button>
+						<br><button id="easy" onclick="desactivarGiro()">Modo Easy</button>
 					</div>
 					<br>
 					<div id="marcador" class="preguntaForm">
@@ -98,7 +98,7 @@
 							$contador = 0;
 						}
 						?><td>
-							<div class="flip-card" name="front" onclick="rotate(this);">
+							<div class="flip-card" name="front" onclick="checkRotate(this);">
 								<div class="front-face imagen"><img src="Imagenes/<?=$key?>" id="<?=$key?>" gafas="<?=$carta['gafas']?>" pelo="<?=$carta['pelo']?>" genero="<?=$carta['genero']?>"></div>
 								<div class="back-face"></div>
 							</div>

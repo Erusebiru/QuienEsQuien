@@ -100,6 +100,7 @@ function workCombo(form){
 			}
 		}
 	}
+	document.getElementById('preguntar').disabled = true;
 	form.reset();
 }
 
@@ -365,4 +366,8 @@ function windowResized(){
 
 function fondo(){
 	document.getElementById('canvas').style.display = 'inline';
+}
+
+function habilitarPregunta(){
+	document.getElementById('preguntar').disabled = false;
 }

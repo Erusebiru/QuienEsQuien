@@ -9,7 +9,7 @@
 		
 			$file= "ranking.txt";
 			if(null !== $_POST['transDesc'] | null !== $_POST['pwd']){
-				$persona = $_POST['transDesc'].":".$_POST['pwd']."\r\n";
+				$persona = $_POST['transDesc'].":".$_POST['pwd']."\n";
 			}else{
 				$persona = "-:-";
 			}

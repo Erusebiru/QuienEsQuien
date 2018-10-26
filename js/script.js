@@ -5,7 +5,9 @@ var numPreguntasInARow = 0;
 var cartasGiradas = 0;
 var cartasGiradasInARow = 0;
 var messageErrorDone = 0;
-var sound = new Audio('sounds/sonic.mp3');
+var giro = new Audio('sounds/sonic.mp3');
+var perder = new Audio('sounds/pacman-dies.mp3');
+var ganar = new Audio('sounds/super-mario-castle-bros.mp3');
 var bloqueo = 0;
 
 var canvas, width, height, ctx;
@@ -27,7 +29,7 @@ function rotate(card){
 		}
 		cartasGiradasInARow++;
 		messageErrorDone = 0;
-		sound.play();
+		giro.play();
 	}
 
 	//Parte de la función que girará la carta asignada
@@ -65,8 +67,16 @@ function win(){
 	document.getElementById("hiddenForm").style.display = "block";
 	document.getElementById("otherRank").style.display = "block";
 	document.getElementById("record").style.display = "none";
+	ganar.play();
 }
 
+function lose(){
+	rotate(elegida);
+	var lmodal = document.getElementById('myModalLose');
+	lmodal.style.display =	"block";
+	perder.play();
+
+}
 //Comprobación si los combos están correctamente seleccionados
 function workCombo(form){
 	var combos = document.getElementsByClassName("combo");
@@ -133,14 +143,14 @@ function openModal(){
 	window.frames['transFrame'].src = "load.php";
 }
 
-function closeWindow(num){
-	if(num == 0){
+function closeWindow(){
 		document.querySelector("#myModal").style.display = "none";
 		var mod = document.querySelector(".modal-content");
 		mod.classList.toggle("collapsed");
-	}else if(num == 1){
-		location.reload();
-	}
+}
+
+function reloadGame(){
+	location.reload();
 }
 
 //Función que cierra la ventana de error
@@ -184,7 +194,7 @@ function endOfGame(){
 		//alert('ganaste');
 		win()
 	}else{
-		alert('perdiste');
+		lose();
 	}
 }
 

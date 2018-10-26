@@ -102,15 +102,25 @@
 					<h3 id="textError"></h3>
 					<button id="cerrarVentana" onclick="closeWindowAlert(this)">Cerrar</button>
 				</div>
+
+				<div id="myModalLose" class="modal">
+					<div class="modal-content" name="loser">
+						<div class="Loser">
+							<h2>¡Has perdido!</h2>
+							<button onclick="reloadGame()">Volver a Jugar</button>
+						</div>
+					</div>
+				</div>
 		
+
 				<div id="myModal" class="modal">
-					<div class="modal-content" name="formRanking">
+					<div class="modal-content">
 						<div id="RankWindow">
 							<div id="otherRank">
 								<h2>¡Has ganado!</h2>
 								<span>¿Deseas guardar tus datos?</span>
 								<button onclick="openModal()">Sí</button>
-								<button onclick="closeWindow(1)">No</button>
+								<button onclick="reloadGame()">No</button>
 								<br><br>
 							</div>
 							<div id="formRank">
@@ -130,7 +140,7 @@
 									<div id="shownForm">
 										<h3>Mostrar ranking</h3>
 										<input type="submit" name="submit" value="Mostrar Ranking" onclick="sendForm2(this)"/>
-										<button id="reiniciarJuego" onclick="closeWindow(1)">Reiniciar</button>
+										<button id="reiniciarJuego" onclick="reloadGame()">Reiniciar</button>
 										<br><br>
 									</div>
 								
@@ -156,7 +166,7 @@
 										</tr>
 									<?}?>
 								</table>
-								<br><button id="cerrarRanking" onclick="closeWindow(0)">Cerrar ventana</button>
+								<br><button id="cerrarRanking" onclick="closeWindow()">Cerrar ventana</button>
 								<br>
 							</div>
 						</div>

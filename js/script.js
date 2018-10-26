@@ -145,9 +145,9 @@ function openModal(){
 }
 
 function closeWindow(){
-		document.querySelector("#myModal").style.display = "none";
-		var mod = document.querySelector(".modal-content");
-		mod.classList.toggle("collapsed");
+	document.querySelector("#myModal").style.display = "none";
+	var mod = document.querySelector("#windowContent");
+	mod.classList.toggle("collapsed");
 }
 
 function reloadGame(){
@@ -181,7 +181,7 @@ function sendForm(){
 function sendForm2(button){
 	document.getElementById("record").style.display = "block";
 	button.disabled = true;
-	var mod = document.querySelector(".modal-content");
+	var mod = document.querySelector("#windowContent");
 	mod.classList.toggle("collapsed");
 	document.getElementById("cerrarRanking").style.display = "none";
 	loadData();
@@ -218,7 +218,7 @@ function showRanking(){
 	document.getElementById("otherRank").style.display = "none";
 	var modal = document.getElementById('myModal');
 	modal.style.display = "block"; 
-	var mod = document.querySelector(".modal-content");
+	var mod = document.querySelector("#windowContent");
 	mod.classList.toggle("collapsed");
 	document.getElementById("cerrarRanking").style.display = "inline";
 }

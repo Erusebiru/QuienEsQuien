@@ -7,6 +7,7 @@
 </head>
 <body>
 	<?	
+		session_start();
 		$config = specFile(); //Creamos el array de características.
 		$cartasText = specConfig(); //Creamos el array con las cartas.
 
@@ -17,13 +18,23 @@
 		}else if(!equal($cartasText)){ //Si dos cartas tuvieran las mismas características, daría error.
 			generarErrores(1);
 		}else{	//Si no entrase en ninguno de los errores, cargaría la página
-			$keys = array_keys($cartasText);
-			shuffle($keys);
-			foreach ($keys as $key) {
-				$cartas[$key] = $cartasText[$key];
+			if(isset($_SESSION['cartas'])){
+				$rand = $_SESSION['selectedCardKey'];
+				$seleccionada = $_SESSION['selectedCardValues'];
+				$cartas = $_SESSION['cartas'];
+			}else{
+				$keys = array_keys($cartasText);
+				shuffle($keys);
+				foreach ($keys as $key) {
+					$cartas[$key] = $cartasText[$key];
+				}
+				$rand = array_rand($cartas); //Barajamos las cartas y nos seleccionará la key de la carta
+				$seleccionada = $cartas[$rand]; //Sacamos las características de la carta
+
+				$_SESSION['selectedCardKey'] = $rand;
+				$_SESSION['selectedCardValues'] = $seleccionada;
+				$_SESSION['cartas'] = $cartas;
 			}
-			$rand = array_rand($cartas); //Barajamos las cartas y nos seleccionará la key de la carta
-			$seleccionada = $cartas[$rand]; //Sacamos las características de la carta
 			echo $rand;
 			?>
 			<canvas id="canvas"></canvas>
@@ -43,7 +54,7 @@
 							$num = 0;
 							foreach ($config as $key => $carta) {
 								?><div class="preguntaForm"><?=$caracter[$num]?></div>
-								<select class="combo" id="<?=$key?>" onchange="habilitarPregunta('<?=$key?>')">"
+								<select class="combo" id="<?=$key?>">"
 								<option selected="selected" disabled="true">Selecciona una respuesta</option>
 								<?
 								foreach ($carta as $value) {
@@ -53,7 +64,7 @@
 								?>
 								</select></br></br>
 							<?}?>
-							<button type="button" onclick='workCombo(this.form)' id='preguntar' disabled>Preguntar</button>
+							<button type="button" onclick='workCombo(this.form)' id='preguntar'>Preguntar</button>
 						</form>
 						<br><button id="showRanking" onclick="showRanking()">Mostrar Ranking</button><br>
 						<br><button id="easy" onclick="bloquearEasy()">Modo Easy</button>
@@ -107,7 +118,7 @@
 					<div class="modal-content" name="loser">
 						<div class="Loser">
 							<h2>¡Has perdido!</h2>
-							<button onclick="reloadGame()">Volver a Jugar</button>
+							<a href="logout.php"><button onclick="reloadGame()">Volver a Jugar</button></a>
 						</div>
 					</div>
 				</div>
@@ -120,7 +131,7 @@
 								<h2>¡Has ganado!</h2>
 								<span>¿Deseas guardar tus datos?</span>
 								<button onclick="openModal()">Sí</button>
-								<button onclick="reloadGame()">No</button>
+								<a href="logout.php"><button onclick="reloadGame()">Volver a Jugar</button></a>
 								<br><br>
 							</div>
 							<div id="formRank">
@@ -132,7 +143,6 @@
 										
 											<input type="hidden" id="custId" name="pwd" value="0">
 											<label id="countQuestions"><b>Puntuación: <span>0</span></b></label>
-											<br><br>
 											<input type="submit" name="submit" value="Submit" onclick="sendForm()"/>
 										</div>
 									</div>
@@ -140,7 +150,7 @@
 									<div id="shownForm">
 										<h3>Mostrar ranking</h3>
 										<input type="submit" name="submit" value="Mostrar Ranking" onclick="sendForm2(this)"/>
-										<button id="reiniciarJuego" onclick="reloadGame()">Reiniciar</button>
+										<a href="logout.php"><button id="reiniciarJuego" onclick="reloadGame()">Volver a Jugar</button></a>
 										<br><br>
 									</div>
 								
@@ -321,7 +331,6 @@
 				fclose($noFound);
 			}
 		}
-
 	?>
 </body>
 </html>

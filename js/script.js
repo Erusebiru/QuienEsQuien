@@ -53,14 +53,14 @@ function checkMatch(){
 		//Pregunta acertada
 		showLight(0);
 		if(modoEasy == "activado"){
-			easy(selectedItem,atributo,true)
+			easy(selectedItem,atributo,true,elegida)
 		}
 		return true;
 	}else{
 		//Pregunta errónea
 		showLight(1);
 		if(modoEasy == "activado"){
-			easy(selectedItem,atributo,false)
+			easy(selectedItem,atributo,false,elegida)
 		}
 		return false;
 	}
@@ -391,7 +391,7 @@ function easy(selectedItem,atributo,pregunta){
 				rotate(cards[i]);
 			}
 		}else{
-			if(atributocarta == selectedItem.value){
+			if(atributocarta != elegida.getAttribute(atributo)){
 				rotate(cards[i]);
 			}
 		}

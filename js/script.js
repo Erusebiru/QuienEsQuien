@@ -1,10 +1,7 @@
 
 var selectedItem;
 var numPreguntas = 0;
-var numPreguntasInARow = 0;
 var cartasGiradas = 0;
-var cartasGiradasInARow = 0;
-var messageErrorDone = 0;
 var giro = new Audio('sounds/sonic.mp3');
 var perder = new Audio('sounds/pacman-dies.mp3');
 var ganar = new Audio('sounds/super-mario-castle-bros.mp3');
@@ -33,8 +30,6 @@ function rotate(card){
 		if(cartasGiradas==11){
 			endOfGame();
 		}
-		cartasGiradasInARow++;
-		messageErrorDone = 0;
 		giro.play();
 	}
 
@@ -52,17 +47,20 @@ function checkMatch(){
 	var atributo = selectedItem.id
 	document.querySelector("#countQuestions span").innerText = numPreguntas;
 	document.querySelector('input[name="pwd"]').value = numPreguntas;
+
 	if(elegida.getAttribute(atributo) == selectedItem.value){
 		//Pregunta acertada
 		showLight(0);
 		if(modoEasy == "activado"){
-			easy(elegida,selectedItem,atributo);
+			easy(selectedItem,atributo,true)
 		}
 		return true;
 	}else{
-
 		//Pregunta errónea
 		showLight(1);
+		if(modoEasy == "activado"){
+			easy(selectedItem,atributo,false)
+		}
 		return false;
 	}
 }
@@ -89,26 +87,18 @@ function lose(){
 //Comprobación si los combos están correctamente seleccionados
 function workCombo(form){
 	var combos = document.getElementsByClassName("combo");
-	
-	if(cartasGiradasInARow == 0 && messageErrorDone == 1){
-		alert("No has girado ninguna carta");
-		messageErrorDone++;
-	}else{
-		if(checkCombo(combos)){
-			//desaparece boton easy
-			if (bloqueo==0){
+
+	if(checkCombo(combos)){
+		//desaparece boton easy
+		if (bloqueo==0){
 			document.getElementById("easy").style.display= "none";
-			}
-			//Todo ok
-			numPreguntas++;
-			document.getElementById("mostrarPregunta").innerHTML = numPreguntas;
-			checkMatch();
-			messageErrorDone++;
-			if(cartasGiradasInARow > 0){
-				cartasGiradasInARow = 0;
-			}
 		}
-	}
+		//Todo ok
+		puntuador();
+		document.getElementById("mostrarPregunta").innerHTML = numPreguntas;
+		checkMatch();
+}
+	
 	document.getElementById('preguntar').disabled = true;
 	form.reset();
 }
@@ -382,10 +372,30 @@ function habilitarPregunta(){
 	document.getElementById('preguntar').disabled = false;
 }
 
-function easy(elegida,selectedItem,atributo){
-	/*var cards = document.querySelectorAll(".select");
-	for(var i=0;i<cards.length;i++){
-		if(cards)
+function easy(selectedItem,atributo,pregunta){
+	var cards = document.querySelectorAll("[att='setted']");
+	var imgCard = document.querySelectorAll(".imagen > img");
+	for(var i=0;i<imgCard.length;i++){
+		var atributocarta = imgCard[i].getAttribute(atributo);
+		if(pregunta){
+			if(atributocarta != selectedItem.value){
+				rotate(cards[i]);
+			}
+		}else{
+			if(atributocarta == selectedItem.value){
+				rotate(cards[i]);
+			}
+		}
+		
 	}
-	alert(selectedItem.value+" "+atributo);*/
+	
+}
+
+function puntuador(){
+	if(modoEasy == "activado"){
+		numPreguntas+=2;
+	}else{
+		numPreguntas++;
+	}
+	
 }

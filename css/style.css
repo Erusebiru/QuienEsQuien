@@ -36,14 +36,14 @@ button{
 	width: 120px;
 }
 #container{
-	width: 80%;
+	width: 70%;
 	margin: 0 auto;
 	z-index: -1;
 }
 
 #left{
 	width: 25%;
-	margin-right: 100px;
+	margin-right: 75px;
 	float:left;
 }
 
@@ -137,7 +137,7 @@ button{
     border: 1px solid #888;
     width: 70%; /* Could be more or less, depending on screen size */
     height: auto;
-    max-height: 120px;
+    max-height: 140px;
 	transition: max-height 2s ease-out;
 	overflow: hidden;
 	animation-name: animatetop;

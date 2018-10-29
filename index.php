@@ -98,7 +98,7 @@
 							$contador = 0;
 						}
 						?><td>
-							<div class="flip-card" name="front" onclick="checkRotate(this);">
+							<div class="flip-card" name="front" att="setted" onclick="checkRotate(this);">
 								<div class="front-face imagen"><img src="Imagenes/<?=$key?>" id="<?=$key?>" gafas="<?=$carta['gafas']?>" pelo="<?=$carta['pelo']?>" genero="<?=$carta['genero']?>"></div>
 								<div class="back-face"></div>
 							</div>

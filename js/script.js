@@ -7,6 +7,7 @@ var perder = new Audio('sounds/pacman-dies.mp3');
 var ganar = new Audio('sounds/super-mario-castle-bros.mp3');
 var bloqueo = 0;
 var modoEasy = "desactivado";
+var modoVeryEasy = "desactivado";
 
 var canvas, width, height, ctx;
 var fireworks = [];
@@ -90,10 +91,13 @@ function workCombo(form){
 
 	if(checkCombo(combos)){
 		//desaparece boton easy
-		if (bloqueo==0){
+		if (modoEasy == "desactivado"){
 			document.getElementById("easy").style.display= "none";
 		}
 		//Todo ok
+		if(modoVeryEasy == "activado"){
+			veryEasy(combos);
+		}
 		puntuador();
 		document.getElementById("mostrarPregunta").innerHTML = numPreguntas;
 		checkMatch();
@@ -131,10 +135,15 @@ function checkCombo(combos){
 }
 
 //Ruben
-function desactivarGiro(){
+function activarModoEasy(){
 	modoEasy = "activado";
-	bloqueo=1;
-	document.getElementById("easy").disabled= true;
+	document.getElementById("easy").disabled = true;
+}
+
+function activarModoVeryEasy(){
+	modoEasy = "activado";
+	modoVeryEasy = "activado";
+	document.getElementById("veryeasy").disabled = true;
 }
 
 function openModal(){
@@ -398,4 +407,15 @@ function puntuador(){
 		numPreguntas++;
 	}
 	
+}
+
+function veryEasy(combos){
+	for(var i=0;i<combos.length;i++){
+		if(combos[i].selectedIndex){
+			if(combos[i].value == selectedItem.value){
+				combos[i].remove(combos[i].selectedIndex);
+			}
+		}
+
+	}
 }

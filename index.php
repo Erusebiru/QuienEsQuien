@@ -67,7 +67,8 @@
 							<button type="button" onclick='workCombo(this.form)' id='preguntar' disabled>Preguntar</button>
 						</form>
 						<br><button id="showRanking" onclick="showRanking()">Mostrar Ranking</button><br>
-						<br><button id="easy" onclick="desactivarGiro()">Modo Easy</button>
+						<br><button id="easy" onclick="activarModoEasy()">Modo Easy</button>
+						<br><button id="veryeasy" onclick="activarModoVeryEasy()">Modo Very Easy</button>
 					</div>
 					<br>
 					<div id="marcador" class="preguntaForm">

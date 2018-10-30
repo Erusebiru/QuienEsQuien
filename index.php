@@ -71,7 +71,7 @@
 						<br>
 						<div id="formeasy">
 							<div class="preguntaForm">Elige un modo</div>
-							<select id="comboEasy" class="combo" onchange="cambiarModo()">
+							<select id="comboEasy" class="comboModo" onchange="cambiarModo()">
 								<option selected="selected" disabled="true">Elige un modo</option>
 								<option value="easy">Modo Easy</option>
 								<option value ="veryeasy">Modo Very Easy</option>

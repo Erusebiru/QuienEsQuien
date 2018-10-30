@@ -137,13 +137,11 @@ function checkCombo(combos){
 //Ruben
 function activarModoEasy(){
 	modoEasy = "activado";
-	document.getElementById("easy").disabled = true;
 }
 
 function activarModoVeryEasy(){
 	modoEasy = "activado";
 	modoVeryEasy = "activado";
-	document.getElementById("veryeasy").disabled = true;
 }
 
 function openModal(){

@@ -58,7 +58,7 @@
 								<option selected="selected" disabled="true">Selecciona una respuesta</option>
 								<?
 								foreach ($carta as $value) {
-									echo "<option>".$value."</option>";
+									echo "<option value=".$value.">".$value."</option>";
 								}
 								$num++;
 								?>
@@ -67,10 +67,19 @@
 							<button type="button" onclick='workCombo(this.form)' id='preguntar' disabled>Preguntar</button>
 						</form>
 						<br><button id="showRanking" onclick="showRanking()">Mostrar Ranking</button><br>
-						<br><button id="easy" onclick="activarModoEasy()">Modo Easy</button>
-						<br><button id="veryeasy" onclick="activarModoVeryEasy()">Modo Very Easy</button>
+
+						<br>
+						<div id="formeasy">
+							<div class="preguntaForm">Elige un modo</div>
+							<select id="comboEasy" class="combo" onchange="cambiarModo()">
+								<option selected="selected" disabled="true">Elige un modo</option>
+								<option value="easy">Modo Easy</option>
+								<option value ="veryeasy">Modo Very Easy</option>
+							</select>
+							<br><br>
+						</div>
 					</div>
-					<br>
+					
 					<div id="marcador" class="preguntaForm">
 						
 						Numero de preguntas: <label id="mostrarPregunta">0</label>

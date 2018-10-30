@@ -92,7 +92,7 @@ function workCombo(form){
 	if(checkCombo(combos)){
 		//desaparece boton easy
 		if (modoEasy == "desactivado"){
-			document.getElementById("easy").style.display= "none";
+			document.getElementById("formeasy").style.display= "none";
 		}
 		//Todo ok
 		if(modoVeryEasy == "activado"){
@@ -381,6 +381,16 @@ function habilitarPregunta(){
 	document.getElementById('preguntar').disabled = false;
 }
 
+function cambiarModo(){
+	var modo = document.getElementById("comboEasy").value;
+	document.getElementById("comboEasy").disabled = true;
+	if(modo == "easy"){
+		activarModoEasy();
+	}else if(modo == "veryeasy"){
+		activarModoVeryEasy();
+	}
+}
+
 function easy(selectedItem,atributo,pregunta){
 	var cards = document.querySelectorAll("[att='setted']");
 	var imgCard = document.querySelectorAll(".imagen > img");
@@ -395,9 +405,7 @@ function easy(selectedItem,atributo,pregunta){
 				rotate(cards[i]);
 			}
 		}
-		
 	}
-	
 }
 
 function puntuador(){

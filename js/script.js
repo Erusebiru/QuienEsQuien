@@ -52,14 +52,14 @@ function checkMatch(){
 	if(elegida.getAttribute(atributo) == selectedItem.value){
 		//Pregunta acertada
 		showLight(0);
-		if(modoEasy == "activado"){
+		if(modoEasy == "activado" || modoVeryEasy == "activado"){
 			easy(selectedItem,atributo,true,elegida)
 		}
 		return true;
 	}else{
 		//Pregunta errónea
 		showLight(1);
-		if(modoEasy == "activado"){
+		if(modoEasy == "activado" || modoVeryEasy == "activado"){
 			easy(selectedItem,atributo,false,elegida)
 		}
 		return false;
@@ -90,17 +90,22 @@ function workCombo(form){
 	var combos = document.getElementsByClassName("combo");
 
 	if(checkCombo(combos)){
+
+		checkMatch();
+
 		//desaparece boton easy
 		if (modoEasy == "desactivado"){
 			document.getElementById("formeasy").style.display= "none";
 		}
 		//Todo ok
+
 		if(modoVeryEasy == "activado"){
 			veryEasy(combos);
 		}
+
 		puntuador();
 		document.getElementById("mostrarPregunta").innerHTML = numPreguntas;
-		checkMatch();
+		
 }
 	
 	document.getElementById('preguntar').disabled = true;
@@ -140,7 +145,6 @@ function activarModoEasy(){
 }
 
 function activarModoVeryEasy(){
-	modoEasy = "activado";
 	modoVeryEasy = "activado";
 }
 
@@ -407,7 +411,7 @@ function easy(selectedItem,atributo,pregunta){
 }
 
 function puntuador(){
-	if(modoEasy == "activado"){
+	if(modoEasy == "activado" || modoVeryEasy == "activado"){
 		numPreguntas+=2;
 	}else{
 		numPreguntas++;

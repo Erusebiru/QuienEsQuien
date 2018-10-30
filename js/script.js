@@ -419,3 +419,8 @@ function veryEasy(combos){
 
 	}
 }
+
+
+function easterEgg(){
+		window.open('easterEgg.html','_self')		
+}

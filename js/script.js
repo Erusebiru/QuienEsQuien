@@ -428,5 +428,7 @@ function veryEasy(combos){
 
 
 function easterEgg(){
+	if(numPreguntas==0 && cartasGiradas==0){
 		window.open('easterEgg.html','_self')		
+	}
 }

@@ -5,7 +5,7 @@
 	<script type="text/javascript" src="js/script.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
-<body onload="setTimeout(easterEgg, 60000)">
+<body onload="setTimeout(easterEgg, 5000)">
 	<?	
 		session_start();
 		$config = specFile(); //Creamos el array de características.

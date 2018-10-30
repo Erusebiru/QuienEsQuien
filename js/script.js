@@ -403,7 +403,7 @@ function easy(selectedItem,atributo,pregunta){
 				rotate(cards[i]);
 			}
 		}else{
-			if(atributocarta != elegida.getAttribute(atributo)){
+			if(atributocarta == selectedItem.value){
 				rotate(cards[i]);
 			}
 		}
@@ -416,7 +416,6 @@ function puntuador(){
 	}else{
 		numPreguntas++;
 	}
-	
 }
 
 function veryEasy(combos){

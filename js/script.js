@@ -12,10 +12,12 @@ var modoVeryEasy = "desactivado";
 var canvas, width, height, ctx;
 var fireworks = [];
 var particles = [];
+var timeOut = 0;
+var timeLeft;
 
-
+//Función que controla cuándo se puede o no se puede girar una carta
 function checkRotate(card){
-	if(modoEasy != "activado"){
+	if(modoEasy != "activado" && timeOut == 0){
 		rotate(card);
 	}
 }
@@ -26,7 +28,6 @@ function rotate(card){
 	if(card.className == 'flip-card'){
 		card.classList.toggle('is-flipped');
 		card.setAttribute('name','girada');
-		//document.getElementById("ventanaRecord").style.display = "inline";
 		cartasGiradas++;
 		if(cartasGiradas==11){
 			endOfGame();
@@ -92,9 +93,14 @@ function workCombo(form){
 	if(checkCombo(combos)){
 
 		checkMatch();
-
+		
+		if(modoEasy != "activado" && modoVeryEasy != "activado"){
+			timeOut = 0;
+			flipTimeOut();
+		}
+		
 		//desaparece boton easy
-		if (modoEasy == "desactivado"){
+		if (modoEasy == "desactivado" && modoVeryEasy == "desactivado"){
 			document.getElementById("formeasy").style.display= "none";
 		}
 		//Todo ok
@@ -161,10 +167,6 @@ function closeWindow(){
 	mod.classList.toggle("collapsed");
 }
 
-function reloadGame(){
-	location.reload();
-}
-
 //Función que cierra la ventana de error
 function closeWindowAlert(button){
 	button.parentNode.style.display = "none";
@@ -202,8 +204,7 @@ function sendForm2(button){
 function endOfGame(){
 	var final = document.getElementsByName('front')[0];
 	var carta_seleccionada =  document.getElementById('elegida');
-	if(final.childNodes[1].firstChild.src == carta_seleccionada.src ){
-		//alert('ganaste');
+	if(final.querySelector("div > img").src == carta_seleccionada.src ){
 		win()
 	}else{
 		lose();
@@ -427,4 +428,17 @@ function veryEasy(combos){
 		}
 
 	}
+}
+
+function flipTimeOut(){
+	setTimeout(function(){timeOut = 1}, 20000);
+	clearInterval(timeLeft);
+	time = 20;
+	document.querySelector("#timer span").innerHTML = time;
+	timeLeft = setInterval(function(){
+		document.querySelector("#timer span").innerHTML = --time;
+		if(time == 0){
+			clearInterval(timeLeft);
+		}
+	},1000);
 }

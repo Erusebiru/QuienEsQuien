@@ -28,12 +28,12 @@ body{
 }
 
 img{
-	width: 100px;
-	height: 120px;
+	width: 100%;
+	height: 100%;
 	border-radius: 5px;
 }
 button{
-	width: 120px;
+	width: 130px;
 }
 #container{
 	width: 70%;
@@ -42,8 +42,7 @@ button{
 }
 
 #left{
-	width: 25%;
-	margin-right: 75px;
+	width: 30%;
 	float:left;
 }
 
@@ -76,7 +75,7 @@ button{
 }
 
 .imagen:hover{
-	box-shadow: 0 0 15px #333;
+	box-shadow: 0 0 15px black;
 }
 
 .back-face{
@@ -104,8 +103,10 @@ button{
 	backface-visibility: hidden;
 }
 .flip-card{
-	width: 100px;
-	height: 120px;
+	width: 6.6em;
+	height: 8em;
+	/*width: 100px;
+	height: 120px;*/
 	margin: 10px;
 	position: relative;
 }
@@ -245,4 +246,14 @@ iframe{
 	width: 80%;
 	text-align: center;
 	margin: 0 auto;
+}
+
+#timer{
+	margin: 0 auto;
+	height: 20px;
+	width: 200px;
+	background-color: #333;
+	color: white;
+	text-align: center;
+	float:right;
 }

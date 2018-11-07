@@ -209,7 +209,7 @@ iframe{
 }
 
 #RankWindow{
-	width: 70%;
+	width: 71%;
 	margin: 0 auto;
 	
 }
@@ -229,7 +229,7 @@ iframe{
 
 #hiddenForm{
 	display: none;
-	margin: 20px;
+	margin: 10px;
 }
 
 #countQuestions{

@@ -18,7 +18,7 @@ var particles = [];
 
 
 function checkRotate(card){
-	if(modoEasy != "activado" && timeOut == 0){
+	if(modoEasy != "activado" && modoVeryEasy != "activado" && timeOut == 0){
 		rotate(card);
 	}
 }

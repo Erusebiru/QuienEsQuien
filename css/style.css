@@ -1,30 +1,12 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+
 body{
 	background-image: url(../Imagenes/bosque.jpg);
 	background-size: cover;
 	background-repeat: no-repeat;
-}
-
-.windowMessage{
-	width: 350px;
-	height: 100px;
-	position: absolute;
-	left: 35%;
-	z-index: 2;
-	top: 35%;
-	border: 1px solid black;
-	text-align: center;
-	background-color: white;
-	padding: 15px;
-	display: none;
-	box-shadow: 0 0 10px #333;
-	border-radius: 12px;
-    animation-name: animatetop;
-    animation-duration: 0.6s
-}
-/* Add Animation */
-@keyframes animatetop {
-    from {top: -300px; opacity: 0}
-    to {top: 210px; opacity: 1}
 }
 
 img{
@@ -32,37 +14,70 @@ img{
 	height: 100%;
 	border-radius: 5px;
 }
+
 button{
 	width: 130px;
 }
+
+iframe{
+	display: none;
+}
+
 #container{
-	width: 70%;
+	width: 80%;
+	height: auto;
 	margin: 0 auto;
 	z-index: -1;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.box{
+	position: relative;
+	height: 100%;
 }
 
 #left{
 	width: 30%;
-	float:left;
 }
 
-#preguntas{
-	margin-top: 40px;
+#container-time{
+	background-color: #333;
+	color: white;
+	border: 1px solid red;
+	width:120px;
+	height:40px;
+	text-align: center;
+	padding-top: 16px;
+	margin-bottom: 30px;
+	font-size: 25px;
+}
+
+.preguntas{
+  	width: 100%;
+  	display: table-caption;
+  	margin-bottom: 20px;
 }
 
 .preguntaForm{
 	background-color: #282626;
 	color: white;
 	text-align: center;
-	width: 180px;
+	width: 210px;
+	padding-top: 5px;
 }
-.respuesta{
-	background-color: #282626;
-	color: white;
+
+.formPreguntas{
+	margin-top: 50px;
+}
+
+#right{
+	width: 70%;
 }
 
 .combo{
-	width: 180px;
+	width: auto;
 }
 
 .comboModo{
@@ -70,30 +85,34 @@ button{
 }
 
 #marcador{
-	padding: 5px;
 	font-size: 14px;
 }
 
 .imagen:hover{
-	box-shadow: 0 0 15px black;
+	box-shadow: 0 0 15px #333;
 }
 
 .back-face{
 	transform: rotateY(180deg);
 	background-image: url('../Imagenes/reverso.jpeg');
 	background-size: cover;
-	width: 100px;
-	height: 120px;
+	width: 6.6em;
+	height: 8em;
 	border-radius: 5px;
+}
+
+.back-face:hover{
+	filter: invert(100%);
 }
 .back-face-selected{
 	background-image: url('../Imagenes/reverso.jpeg');
 	background-size: cover;
-	width: 100px;
-	height: 120px;
+	width: 125px !important;
+	height: 150px !important;
 	backface-visibility: hidden;
-	border-radius: 5px;
+	border-radius: 5px;	
 }
+
 .flip-card .front-face, .flip-card .back-face, .flip-card .selected, .back-face-selected{
 	transition: transform 500ms;
 	display: block;
@@ -102,22 +121,57 @@ button{
 	position: absolute;
 	backface-visibility: hidden;
 }
+
 .flip-card{
 	width: 6.6em;
 	height: 8em;
-	/*width: 100px;
-	height: 120px;*/
-	margin: 10px;
+	margin: 0.2em;
 	position: relative;
 }
+
 .flip-card.is-flipped, .selected.is-flipped{
 	transform: rotateY(180deg);
 	transition: transform 1s;
 	transform-style: preserve-3d;
 }
 
+
+.flip-card.is-flipped, .selected.is-flipped{
+	transform: rotateY(180deg);
+	transition: transform 1s;
+	transform-style: preserve-3d;
+}
+
+
 .selected{
 	transform: rotateY(180deg);
+	height: 150px !important;
+	width: 125px !important;
+}
+
+#true,#false{
+	display: none;
+}
+
+@-moz-keyframes blink{
+	0%{opacity: 0;}
+	50%{opacity: .5;}
+	100%{opacity: 1;}
+}
+
+@keyframes blink{
+	0%{opacity: 0;}
+	50%{opacity: .5;}
+	100%{opacity: 1;}
+}
+
+.light {
+	margin-left: 15px;
+	width: 30px;
+	height: 30px;
+    -moz-animation: blink normal 1s infinite ease-in-out; /* Firefox */
+    animation: blink normal 1s infinite ease-in-out;
+    animation: blink 1s linear infinite;
 }
 
 .modal {
@@ -150,33 +204,32 @@ button{
 	border-radius: 12px;
 }
 
-iframe{
-	display: none;
-}
 .modal-content.collapsed{
 	max-height: 600px;
 }
 
 #RankWindow{
-	width: 80%;
+	width: 70%;
 	margin: 0 auto;
+	
 }
 
 #otherRank{
 	display:block;
-	width: 80%;
-	margin: 10px auto;
+	width: 50%;
+	margin: 20px auto;
 }
 
 #formRank{
 	display: none;
 	text-align: center;
-	width: 90%;
+	width: 100%;
 	margin: 0 auto;
 }
 
 #hiddenForm{
 	display: none;
+	margin: 20px;
 }
 
 #countQuestions{
@@ -187,6 +240,7 @@ iframe{
 	display: none;
 	width: 50%;
 	margin: 0 auto;
+	padding: 20px;
 }
 
 #inputName{
@@ -199,6 +253,7 @@ iframe{
 	margin: 0 auto;
 	text-align: center;
 	display: none;
+	padding: 20px;
 }
 #tablaRecord{
 	border-collapse: collapse;
@@ -209,30 +264,6 @@ iframe{
 	padding: 5px;
 	width: 100px;
 	text-align: center;
-}
-#true,#false{
-	display: none;
-}
-
-@-moz-keyframes blink{
-	0%{opacity: 0;}
-	50%{opacity: .5;}
-	100%{opacity: 1;}
-}
-
-@keyframes blink{
-	0%{opacity: 0;}
-	50%{opacity: .5;}
-	100%{opacity: 1;}
-}
-
-.light {
-	margin-left: 15px;
-	width: 30px;
-	height: 30px;
-    -moz-animation: blink normal 1s infinite ease-in-out; /* Firefox */
-    animation: blink normal 1s infinite ease-in-out;
-    animation: blink 1s linear infinite;
 }
 
 #canvas{
@@ -246,14 +277,55 @@ iframe{
 	width: 80%;
 	text-align: center;
 	margin: 0 auto;
+	padding: 20px;
 }
 
-#timer{
-	margin: 0 auto;
-	height: 20px;
-	width: 200px;
-	background-color: #333;
-	color: white;
-	text-align: center;
-	float:right;
+.cup{
+	content: url("../Imagenes/cup3.png");
+	margin: 3px;
+}
+
+/* RESPONSIVE */
+@media screen and (max-width:500px){
+	.container {
+		
+	}
+
+	#left {
+		order:2;
+		width: 100%;
+		margin-bottom: 30px;
+	}
+
+	#right {
+		order:1;
+		width: 100%;
+	}
+	.cartaSeleccionada{
+		width: 35%;
+		margin: 0 auto;
+	}
+
+
+
+	.preguntas, .rankModo{
+		width: 100%;
+		display: flex;
+		margin-left: 10%;
+    	justify-content: center;
+    	align-items: center;
+	}
+
+	.tablaCartas{
+		width: 80%;
+		margin: 0 auto;
+	}
+
+	.preguntaForm{
+		margin: 0 auto;
+	}
+	
+	#container-time{
+		margin-bottom: 20px;
+	}
 }

@@ -8,14 +8,16 @@ var ganar = new Audio('sounds/super-mario-castle-bros.mp3');
 var bloqueo = 0;
 var modoEasy = "desactivado";
 var modoVeryEasy = "desactivado";
+var timeOut = 0;
+var countTime;
+var timer;
+//var seconds_left = 20;
 
 var canvas, width, height, ctx;
 var fireworks = [];
 var particles = [];
-var timeOut = 0;
-var timeLeft;
 
-//Función que controla cuándo se puede o no se puede girar una carta
+
 function checkRotate(card){
 	if(modoEasy != "activado" && timeOut == 0){
 		rotate(card);
@@ -24,10 +26,12 @@ function checkRotate(card){
 
 //Función para girar cartas
 function rotate(card){
+
 	//Parte de la función que girará las cartas del tablero
 	if(card.className == 'flip-card'){
 		card.classList.toggle('is-flipped');
 		card.setAttribute('name','girada');
+		//document.getElementById("ventanaRecord").style.display = "inline";
 		cartasGiradas++;
 		if(cartasGiradas==11){
 			endOfGame();
@@ -44,9 +48,10 @@ function rotate(card){
 /*
 * Esta función comprueba si el valor de la pregunta elegida coincide con el valor de la carta elegida
 */
-function checkMatch(){
+function checkMatch(combos){
 	var elegida = document.getElementById("elegida");
-	var atributo = selectedItem.id
+	selectedItem = checkCombo(combos);
+	var atributo = selectedItem.getAttribute('name');
 	document.querySelector("#countQuestions span").innerText = numPreguntas;
 	document.querySelector('input[name="pwd"]').value = numPreguntas;
 
@@ -88,20 +93,20 @@ function lose(){
 }
 //Comprobación si los combos están correctamente seleccionados
 function workCombo(form){
-	var combos = document.getElementsByClassName("combo");
+	var combos = document.querySelector(".combo");
+		checkMatch(combos);
 
-	if(checkCombo(combos)){
-
-		checkMatch();
-		
-		if(modoEasy != "activado" && modoVeryEasy != "activado"){
-			timeOut = 0;
-			flipTimeOut();
-		}
-		
-		//desaparece boton easy
+		//desaparece boton easy y arranca el timer si los modos easy o very easy están desactivados
 		if (modoEasy == "desactivado" && modoVeryEasy == "desactivado"){
-			document.getElementById("formeasy").style.display= "none";
+			var formEasy = document.getElementById("formeasy");
+			if(formEasy.style.display != "none"){
+				formEasy.style.display = "none";
+				centerItems();
+			}
+
+			timeOut = 0;
+			setTimer();
+			showTimer();
 		}
 		//Todo ok
 
@@ -112,8 +117,6 @@ function workCombo(form){
 		puntuador();
 		document.getElementById("mostrarPregunta").innerHTML = numPreguntas;
 		
-}
-	
 	document.getElementById('preguntar').disabled = true;
 	form.reset();
 }
@@ -123,26 +126,9 @@ function workCombo(form){
 * Si ha sido 1 devolverá true, si no ha sido ninguno o si ha elegido más de 1 devolverá false y un mensaje.
 */
 function checkCombo(combos){
-	var count = 0;
-
-	for(var i=0;i<combos.length;i++){
-		if(combos[i].selectedIndex){
-			selectedItem = combos[i];
-			count++;
-		}
-		if(count > 1){
-			document.getElementById("ventanaError").style.display = "inline"
-			document.getElementById("textError").innerHTML = "Debes realizar sólo una pregunta.";
-			return false;
-		}
-	}
-	if(count == 0){
-		document.getElementById("textError").innerHTML = "No has seleccionado ninguna pregunta.";
-		document.getElementById("ventanaError").style.display = "inline"
-		return false
-	}else{
-		return true;
-	}
+	var combo = combos.options;
+	selectedItem = combo[combo.selectedIndex];
+	return selectedItem;
 }
 
 //Ruben
@@ -165,6 +151,10 @@ function closeWindow(){
 	document.querySelector("#myModal").style.display = "none";
 	var mod = document.querySelector("#windowContent");
 	mod.classList.toggle("collapsed");
+}
+
+function reloadGame(){
+	location.reload();
 }
 
 //Función que cierra la ventana de error
@@ -204,7 +194,8 @@ function sendForm2(button){
 function endOfGame(){
 	var final = document.getElementsByName('front')[0];
 	var carta_seleccionada =  document.getElementById('elegida');
-	if(final.querySelector("div > img").src == carta_seleccionada.src ){
+	if(final.childNodes[1].firstChild.src == carta_seleccionada.src ){
+		//alert('ganaste');
 		win()
 	}else{
 		lose();
@@ -420,25 +411,47 @@ function puntuador(){
 }
 
 function veryEasy(combos){
-	for(var i=0;i<combos.length;i++){
-		if(combos[i].selectedIndex){
-			if(combos[i].value == selectedItem.value){
-				combos[i].remove(combos[i].selectedIndex);
-			}
-		}
+	combos.remove(selectedItem.index);
+}
 
+function setTimer(){
+	clearTimeout(countTime);
+countTime =	setTimeout(function (){
+		timeOut=1;
+
+	}, 20000);
+}
+
+function showTimer(){
+	var seconds_left = 20;
+	clearInterval(timer);
+	document.getElementById('time').style.color = 'white';
+	document.getElementById('time').innerHTML = seconds_left;
+	timer = setInterval(function(){
+	
+	document.getElementById('time').innerHTML = --seconds_left;
+	if (seconds_left == 0){
+		clearInterval(timer);
+	}
+	if (seconds_left == 5){
+		document.getElementById('time').style.color = 'red';
+	}
+	}, 1000);	
+}
+
+function easterEgg(){
+	if(numPreguntas==0 && cartasGiradas==0){
+		window.open('easterEgg.html','_self')		
 	}
 }
 
-function flipTimeOut(){
-	setTimeout(function(){timeOut = 1}, 20000);
-	clearInterval(timeLeft);
-	time = 20;
-	document.querySelector("#timer span").innerHTML = time;
-	timeLeft = setInterval(function(){
-		document.querySelector("#timer span").innerHTML = --time;
-		if(time == 0){
-			clearInterval(timeLeft);
-		}
-	},1000);
+function centerItems(){
+	var buttonrank = document.getElementById("buttonRank");
+	if(window.innerWidth < 500){
+		buttonrank.style.width = "40%";
+		buttonrank.style.margin = "0 auto";				
+	}else{
+		buttonrank.style.width = "initial";
+		buttonrank.style.margin = "initial";				
+	}
 }

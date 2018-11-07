@@ -1,0 +1,28 @@
+body{
+	background-image: url('../Imagenes/fondo.jpg');
+	background-size: cover;
+	background-repeat: no-repeat; 
+}
+div {
+	z-index: 999;
+	margin-left: 35%;
+	margin-top: 4%;
+	text-align: center;
+	color: white;
+    width: 400px;
+    height: 100px;
+    position: absolute;
+    animation-name: creditos;
+    animation-duration: 4s;
+}
+@keyframes creditos {
+    0%   {top:55%;}
+    100% {top:0%;}
+}
+
+#colaboradores{
+    margin-top: 30%;
+}
+body{
+    overflow: hidden;
+}

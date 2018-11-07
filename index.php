@@ -60,8 +60,8 @@
 					<div class="formPreguntas">
 						<div id="container-time" class="preguntaForm"><p id="time">20</p></div>
 						<div class="preguntas">
+							<button type="button" onclick='workCombo()' id='preguntar' disabled>Preguntar</button>
 							<form id="preguntas">
-								<button type="button" onclick='workCombo(this.form)' id='preguntar' disabled>Preguntar</button>
 								<select class="combo" id="combo" onchange="habilitarPregunta()">
 	
 									<option selected="selected" disabled="true">Selecciona una respuesta</option>
@@ -77,7 +77,7 @@
 							</form>
 						</div>
 						<div class="rankModo">
-							<div class="buttonRanking" id="buttonRank"><button id="showRanking" onclick="showRanking()"><img class="cup"></button></div>
+							<div class="buttonRanking" id="buttonRank"><button id="showRanking" onclick="showRanking()"><img src="Imagenes/cup3.png" class="cup"></button></div>
 
 							<div id="formeasy">
 								<select id="comboEasy" class="comboModo" onchange="cambiarModo()">

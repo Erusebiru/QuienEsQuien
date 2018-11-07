@@ -11,7 +11,6 @@ var modoVeryEasy = "desactivado";
 var timeOut = 0;
 var countTime;
 var timer;
-//var seconds_left = 20;
 
 var canvas, width, height, ctx;
 var fireworks = [];
@@ -31,7 +30,6 @@ function rotate(card){
 	if(card.className == 'flip-card'){
 		card.classList.toggle('is-flipped');
 		card.setAttribute('name','girada');
-		//document.getElementById("ventanaRecord").style.display = "inline";
 		cartasGiradas++;
 		if(cartasGiradas==11){
 			endOfGame();
@@ -52,8 +50,6 @@ function checkMatch(combos){
 	var elegida = document.getElementById("elegida");
 	selectedItem = checkCombo(combos);
 	var atributo = selectedItem.getAttribute('name');
-	document.querySelector("#countQuestions span").innerText = numPreguntas;
-	document.querySelector('input[name="pwd"]').value = numPreguntas;
 
 	if(elegida.getAttribute(atributo) == selectedItem.value){
 		//Pregunta acertada
@@ -92,7 +88,8 @@ function lose(){
 
 }
 //Comprobación si los combos están correctamente seleccionados
-function workCombo(form){
+function workCombo(){
+	var form = document.getElementById("preguntas");
 	var combos = document.querySelector(".combo");
 		checkMatch(combos);
 
@@ -116,6 +113,8 @@ function workCombo(form){
 
 		puntuador();
 		document.getElementById("mostrarPregunta").innerHTML = numPreguntas;
+		document.querySelector('input[name="pwd"]').value = numPreguntas;
+		document.querySelector('#countQuestions span').textContent = numPreguntas;
 		
 	document.getElementById('preguntar').disabled = true;
 	form.reset();

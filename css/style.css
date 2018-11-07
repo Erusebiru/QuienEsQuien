@@ -281,8 +281,9 @@ iframe{
 }
 
 .cup{
-	content: url("../Imagenes/cup3.png");
 	margin: 3px;
+	width: 100%;
+	height: 100%;
 }
 
 /* RESPONSIVE */
@@ -305,7 +306,10 @@ iframe{
 		width: 35%;
 		margin: 0 auto;
 	}
-
+	
+	.formeEasy{
+		margin-left: 2px;
+	}
 
 
 	.preguntas, .rankModo{

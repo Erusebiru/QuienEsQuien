@@ -3,10 +3,13 @@
 <head>
 	<title></title>
 	<script type="text/javascript" src="js/script.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="shortcut icon" href="#" />
 </head>
-<body>
+<body onload="setTimeout(easterEgg, 15000)" onresize="centerItems()">
 	<?	
+		session_start();
 		$config = specFile(); //Creamos el array de características.
 		$cartasText = specConfig(); //Creamos el array con las cartas.
 
@@ -17,52 +20,80 @@
 		}else if(!equal($cartasText)){ //Si dos cartas tuvieran las mismas características, daría error.
 			generarErrores(1);
 		}else{	//Si no entrase en ninguno de los errores, cargaría la página
-			$keys = array_keys($cartasText);
-			shuffle($keys);
-			foreach ($keys as $key) {
-				$cartas[$key] = $cartasText[$key];
+			if(isset($_SESSION['cartas'])){
+				$rand = $_SESSION['selectedCardKey'];
+				$seleccionada = $_SESSION['selectedCardValues'];
+				$cartas = $_SESSION['cartas'];
+			}else{
+				$keys = array_keys($cartasText);
+				shuffle($keys);
+				foreach ($keys as $key) {
+					$cartas[$key] = $cartasText[$key];
+				}
+				$rand = array_rand($cartas); //Barajamos las cartas y nos seleccionará la key de la carta
+				$seleccionada = $cartas[$rand]; //Sacamos las características de la carta
+
+				$_SESSION['selectedCardKey'] = $rand;
+				$_SESSION['selectedCardValues'] = $seleccionada;
+				$_SESSION['cartas'] = $cartas;
 			}
-			$rand = array_rand($cartas); //Barajamos las cartas y nos seleccionará la key de la carta
-			$seleccionada = $cartas[$rand]; //Sacamos las características de la carta
 			echo $rand;
 			?>
 			<canvas id="canvas"></canvas>
 			<div id="container">
-
 				
-				<div id="left">
-					<div class="flip-card">
-						<div class="back-face-selected"></div>
-						<div class="selected">
-							<img src="Imagenes/<?=$rand?>" id="elegida" name="<?=$rand?>" gafas="<?=$seleccionada['gafas']?>" pelo="<?=$seleccionada['pelo']?>" genero="<?=$seleccionada['genero']?>">
+				<div class="box" id="left">
+					<div class="cartaSeleccionada">
+						<div class="flip-card carta">
+							<div class="back-face-selected"></div>
+							<div class="selected">
+								<img src="Imagenes/<?=$rand?>" id="elegida" name="<?=$rand?>" 
+									<?
+									foreach($seleccionada as $keyCarta => $value){
+										echo $keyCarta."='".$value."'";
+									}?>
+								>
+							</div>
 						</div>
 					</div>
-					<div id="preguntas">
-						<?$caracter = ["Gafas:","Color de Pelo:","Genero:"];
-						?><form id="preguntas"><?
-							$num = 0;
-							foreach ($config as $key => $carta) {
-								?><div class="preguntaForm"><?=$caracter[$num]?></div>
-								<select class="combo" id="<?=$key?>">"
-								<option selected="selected" disabled="true">Selecciona una respuesta</option>
-								<?
-								foreach ($carta as $value) {
-									echo "<option>".$value."</option>";
-								}
-								$num++;
-								?>
-								</select></br></br>
-							<?}?>
-							<button type="button" onclick='workCombo(this.form)' id='preguntar'>Preguntar</button>
-						</form>
-						<br><button id="showRanking" onclick="showRanking()">Mostrar Ranking</button><br>
-						<br><button id="easy" onclick="bloquearEasy()">Modo Easy</button>
+
+					<div class="formPreguntas">
+						<div id="container-time" class="preguntaForm"><p id="time">20</p></div>
+						<div class="preguntas">
+							<button type="button" onclick='workCombo()' id='preguntar' disabled>Preguntar</button>
+							<form id="preguntas">
+								<select class="combo" id="combo" onchange="habilitarPregunta()">
+	
+									<option selected="selected" disabled="true">Selecciona una respuesta</option>
+										<?
+									foreach ($config as $key => $carta) {
+										
+										foreach ($carta as $value) {
+											echo "<option value=".$value." name=".$key.">".$key." ".$value."</option>";
+										}
+										?>
+									<?}?>
+								</select>
+							</form>
+						</div>
+						<div class="rankModo">
+							<div class="buttonRanking" id="buttonRank"><button id="showRanking" onclick="showRanking()"><img src="Imagenes/cup3.png" class="cup"></button></div>
+
+							<div id="formeasy">
+								<select id="comboEasy" class="comboModo" onchange="cambiarModo()">
+									<option selected="selected" disabled="true">Elige un modo</option>
+									<option value="easy">Modo Easy</option>
+									<option value ="veryeasy">Modo Very Easy</option>
+								</select>
+							</div>
+						</div>
 					</div>
-					<br>
+					<br><br>
+					
 					<div id="marcador" class="preguntaForm">
-						
 						Numero de preguntas: <label id="mostrarPregunta">0</label>
 					</div>
+
 					<div class="preguntaForm">
 						<div id="true">
 							Correcto<img id="correcto" class="light" src="Imagenes/circle_green.png">
@@ -71,66 +102,74 @@
 						<div id="false">
 							Incorrecto<img id="error" class="light" src="Imagenes/circle.png">
 						</div>
-
 					</div>
 				</div>
 
-				<div id="tablaCartas"><?
-					echo "<table>";
-					$contador = 0;
-					foreach ($cartas as $key => $carta) {
-						if($contador == 0){
-							echo "<tr>";	
+				<div class="box" id="right">
+					<div class="tablaCartas"><?
+						echo "<table>";
+						$contador = 0;
+						foreach ($cartas as $key => $carta) {
+							if($contador == 0){
+								echo "<tr>";	
+							}
+							if($contador == 3){
+								echo "</tr>";
+								$contador = 0;
+							}
+							?><td>
+								<div class="flip-card" name="front" att="setted" onclick="checkRotate(this);">
+									<div class="front-face imagen"><img src="Imagenes/<?=$key?>" id="<?=$key?>" gafas="<?=$carta['gafas']?>" pelo="<?=$carta['pelo']?>" genero="<?=$carta['genero']?>"></div>
+									<div class="back-face"></div>
+								</div>
+							</td>
+							<?$contador++;
 						}
-						if($contador == 3){
-							echo "</tr>";
-							$contador = 0;
-						}
-						?><td>
-							<div class="flip-card" name="front" onclick="rotate(this);">
-								<div class="front-face imagen"><img src="Imagenes/<?=$key?>" id="<?=$key?>" gafas="<?=$carta['gafas']?>" pelo="<?=$carta['pelo']?>" genero="<?=$carta['genero']?>"></div>
-								<div class="back-face"></div>
-							</div>
-						</td>
-						<?$contador++;
-					}
-					echo "</table>";
-					?>
+						echo "</table>";
+						?>
+					</div>
 				</div>
 
-				<div id="ventanaError" class="windowMessage">
-					<h3 id="textError"></h3>
-					<button id="cerrarVentana" onclick="closeWindowAlert(this)">Cerrar</button>
+				<div id="myModalLose" class="modal">
+					<div class="modal-content" name="loser">
+						<div class="Loser">
+							<h2>¡Has perdido!</h2>
+							<br>
+							<a href="logout.php"><button>Volver a Jugar</button></a>
+						</div>
+					</div>
 				</div>
 		
+
 				<div id="myModal" class="modal">
-					<div class="modal-content" name="formRanking">
+					<div class="modal-content" id="windowContent">
 						<div id="RankWindow">
 							<div id="otherRank">
 								<h2>¡Has ganado!</h2>
 								<span>¿Deseas guardar tus datos?</span>
-								<button onclick="openModal()">Sí</button>
-								<button onclick="closeWindow(1)">No</button>
 								<br><br>
+								<button onclick="openModal()">Sí</button>
+								<a href="logout.php"><button>Volver a Jugar</button></a>
 							</div>
 							<div id="formRank">
 								<form target="transFrame" method="POST" class="EditName" id="reportEdit" action="load.php">
 									<div id="hiddenForm">
 										<h3>Introduce tus datos</h3>
+										<br>
 										<div id="inputName">
 											<label  for="inputName">Introduce tu nombre: <input type="text" name="transDesc"></label>
 										
 											<input type="hidden" id="custId" name="pwd" value="0">
-											<label id="countQuestions"><b>Puntuación: <span>0</span></b></label>
-											<br><br>
-											<input type="submit" name="submit" value="Submit" onclick="sendForm()"/>
+											<label id="countQuestions"><b>Puntuación: <span>0</span></b></label><br><br>
+											<button type="submit" name="submit" value="Submit" onclick="sendForm()">Enviar</button>
 										</div>
 									</div>
 								</form>
 									<div id="shownForm">
 										<h3>Mostrar ranking</h3>
-										<input type="submit" name="submit" value="Mostrar Ranking" onclick="sendForm2(this)"/>
-										<button id="reiniciarJuego" onclick="closeWindow(1)">Reiniciar</button>
+										<br>
+										<button type="submit" name="submit" value="Mostrar Ranking" onclick="sendForm2(this)">Mostrar Ranking</button>
+										<a href="logout.php"><button id="reiniciarJuego">Volver a Jugar</button></a>
 										<br><br>
 									</div>
 								
@@ -156,7 +195,7 @@
 										</tr>
 									<?}?>
 								</table>
-								<br><button id="cerrarRanking" onclick="closeWindow(0)">Cerrar ventana</button>
+								<br><button id="cerrarRanking" onclick="closeWindow()">Cerrar ventana</button>
 								<br>
 							</div>
 						</div>
@@ -311,7 +350,6 @@
 				fclose($noFound);
 			}
 		}
-
 	?>
 </body>
 </html>

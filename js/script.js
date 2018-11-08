@@ -1,33 +1,40 @@
 
 var selectedItem;
 var numPreguntas = 0;
-var numPreguntasInARow = 0;
 var cartasGiradas = 0;
-var cartasGiradasInARow = 0;
-var messageErrorDone = 0;
-var sound = new Audio('sounds/sonic.mp3');
+var giro = new Audio('sounds/sonic.mp3');
+var perder = new Audio('sounds/pacman-dies.mp3');
+var ganar = new Audio('sounds/super-mario-castle-bros.mp3');
 var bloqueo = 0;
+var modoEasy = "desactivado";
+var modoVeryEasy = "desactivado";
+var timeOut = 0;
+var countTime;
+var timer;
 
 var canvas, width, height, ctx;
 var fireworks = [];
 var particles = [];
 
 
+function checkRotate(card){
+	if(modoEasy != "activado" && modoVeryEasy != "activado" && timeOut == 0){
+		rotate(card);
+	}
+}
+
 //Función para girar cartas
 function rotate(card){
+
 	//Parte de la función que girará las cartas del tablero
 	if(card.className == 'flip-card'){
 		card.classList.toggle('is-flipped');
 		card.setAttribute('name','girada');
-		//document.getElementById("ventanaRecord").style.display = "inline";
 		cartasGiradas++;
-		console.log(cartasGiradas);
 		if(cartasGiradas==11){
 			endOfGame();
 		}
-		cartasGiradasInARow++;
-		messageErrorDone = 0;
-		sound.play();
+		giro.play();
 	}
 
 	//Parte de la función que girará la carta asignada
@@ -39,19 +46,24 @@ function rotate(card){
 /*
 * Esta función comprueba si el valor de la pregunta elegida coincide con el valor de la carta elegida
 */
-function checkMatch(){
+function checkMatch(combos){
 	var elegida = document.getElementById("elegida");
-	document.querySelector("#countQuestions span").innerText = numPreguntas;
-	document.querySelector('input[name="pwd"]').value = numPreguntas;
-	if(elegida.getAttribute(selectedItem.id) == selectedItem.value){
-		//win();
+	selectedItem = checkCombo(combos);
+	var atributo = selectedItem.getAttribute('name');
+
+	if(elegida.getAttribute(atributo) == selectedItem.value){
 		//Pregunta acertada
 		showLight(0);
+		if(modoEasy == "activado" || modoVeryEasy == "activado"){
+			easy(selectedItem,atributo,true,elegida)
+		}
 		return true;
 	}else{
-
 		//Pregunta errónea
 		showLight(1);
+		if(modoEasy == "activado" || modoVeryEasy == "activado"){
+			easy(selectedItem,atributo,false,elegida)
+		}
 		return false;
 	}
 }
@@ -65,65 +77,61 @@ function win(){
 	document.getElementById("hiddenForm").style.display = "block";
 	document.getElementById("otherRank").style.display = "block";
 	document.getElementById("record").style.display = "none";
+	ganar.play();
 }
 
+function lose(){
+	rotate(elegida);
+	var lmodal = document.getElementById('myModalLose');
+	lmodal.style.display =	"block";
+	perder.play();
+
+}
 //Comprobación si los combos están correctamente seleccionados
-function workCombo(form){
-	var combos = document.getElementsByClassName("combo");
-	
-	if(cartasGiradasInARow == 0 && messageErrorDone == 1){
-		alert("No has girado ninguna carta");
-		messageErrorDone++;
-	}else{
-		if(checkCombo(combos)){
-			//desaparece boton easy
-			if (bloqueo==0){
-			document.getElementById("easy").style.display= "none";
+function workCombo(){
+	var form = document.getElementById("preguntas");
+	var combos = document.querySelector(".combo");
+		checkMatch(combos);
+
+		//desaparece boton easy y arranca el timer si los modos easy o very easy están desactivados
+		if (modoEasy == "desactivado" && modoVeryEasy == "desactivado"){
+			var formEasy = document.getElementById("formeasy");
+			if(formEasy.style.display != "none"){
+				formEasy.style.display = "none";
+				centerItems();
 			}
-			//Todo ok
-			numPreguntas++;
-			document.getElementById("mostrarPregunta").innerHTML = numPreguntas;
-			checkMatch();
-			messageErrorDone++;
-			if(cartasGiradasInARow > 0){
-				cartasGiradasInARow = 0;
-			}
+
+			timeOut = 0;
+			setTimer();
+			showTimer();
 		}
-	}
+		//Todo ok
+
+		if(modoVeryEasy == "activado"){
+			veryEasy(combos);
+		}
+
+		puntuador();
+		document.getElementById("mostrarPregunta").innerHTML = numPreguntas;
+		document.querySelector('input[name="pwd"]').value = numPreguntas;
+		document.querySelector('#countQuestions span').textContent = numPreguntas;
+		
+	document.getElementById('preguntar').disabled = true;
 	form.reset();
 }
 
-/*
-* Función para controlar cuántos combos han sido elegidos
-* Si ha sido 1 devolverá true, si no ha sido ninguno o si ha elegido más de 1 devolverá false y un mensaje.
-*/
 function checkCombo(combos){
-	var count = 0;
-
-	for(var i=0;i<combos.length;i++){
-		if(combos[i].selectedIndex){
-			selectedItem = combos[i];
-			count++;
-		}
-		if(count > 1){
-			document.getElementById("ventanaError").style.display = "inline"
-			document.getElementById("textError").innerHTML = "Debes realizar sólo una pregunta.";
-			return false;
-		}
-	}
-	if(count == 0){
-		document.getElementById("textError").innerHTML = "No has seleccionado ninguna pregunta.";
-		document.getElementById("ventanaError").style.display = "inline"
-		return false
-	}else{
-		return true;
-	}
+	var combo = combos.options;
+	selectedItem = combo[combo.selectedIndex];
+	return selectedItem;
 }
 
-//Ruben
-function bloquearEasy(){
-	bloqueo=1;
-	document.getElementById("easy").disabled= true;
+function activarModoEasy(){
+	modoEasy = "activado";
+}
+
+function activarModoVeryEasy(){
+	modoVeryEasy = "activado";
 }
 
 function openModal(){
@@ -133,19 +141,14 @@ function openModal(){
 	window.frames['transFrame'].src = "load.php";
 }
 
-function closeWindow(num){
-	if(num == 0){
-		document.querySelector("#myModal").style.display = "none";
-		var mod = document.querySelector(".modal-content");
-		mod.classList.toggle("collapsed");
-	}else if(num == 1){
-		location.reload();
-	}
+function closeWindow(){
+	document.querySelector("#myModal").style.display = "none";
+	var mod = document.querySelector("#windowContent");
+	mod.classList.toggle("collapsed");
 }
 
-//Función que cierra la ventana de error
-function closeWindowAlert(button){
-	button.parentNode.style.display = "none";
+function reloadGame(){
+	location.reload();
 }
 
 //Función para cargar los datos de archivo a la base de datos de forma asíncrona
@@ -170,7 +173,7 @@ function sendForm(){
 function sendForm2(button){
 	document.getElementById("record").style.display = "block";
 	button.disabled = true;
-	var mod = document.querySelector(".modal-content");
+	var mod = document.querySelector("#windowContent");
 	mod.classList.toggle("collapsed");
 	document.getElementById("cerrarRanking").style.display = "none";
 	loadData();
@@ -181,10 +184,9 @@ function endOfGame(){
 	var final = document.getElementsByName('front')[0];
 	var carta_seleccionada =  document.getElementById('elegida');
 	if(final.childNodes[1].firstChild.src == carta_seleccionada.src ){
-		//alert('ganaste');
 		win()
 	}else{
-		alert('perdiste');
+		lose();
 	}
 }
 
@@ -207,7 +209,7 @@ function showRanking(){
 	document.getElementById("otherRank").style.display = "none";
 	var modal = document.getElementById('myModal');
 	modal.style.display = "block"; 
-	var mod = document.querySelector(".modal-content");
+	var mod = document.querySelector("#windowContent");
 	mod.classList.toggle("collapsed");
 	document.getElementById("cerrarRanking").style.display = "inline";
 }
@@ -355,4 +357,89 @@ function windowResized(){
 
 function fondo(){
 	document.getElementById('canvas').style.display = 'inline';
+}
+
+function habilitarPregunta(){
+	document.getElementById('preguntar').disabled = false;
+}
+
+function cambiarModo(){
+	var modo = document.getElementById("comboEasy").value;
+	document.getElementById("comboEasy").disabled = true;
+	if(modo == "easy"){
+		activarModoEasy();
+	}else if(modo == "veryeasy"){
+		activarModoVeryEasy();
+	}
+}
+
+function easy(selectedItem,atributo,pregunta){
+	var cards = document.querySelectorAll("[att='setted']");
+	var imgCard = document.querySelectorAll(".imagen > img");
+	for(var i=0;i<imgCard.length;i++){
+		var atributocarta = imgCard[i].getAttribute(atributo);
+		if(pregunta){
+			if(atributocarta != selectedItem.value){
+				rotate(cards[i]);
+			}
+		}else{
+			if(atributocarta == selectedItem.value){
+				rotate(cards[i]);
+			}
+		}
+	}
+}
+
+function puntuador(){
+	if(modoEasy == "activado" || modoVeryEasy == "activado"){
+		numPreguntas+=2;
+	}else{
+		numPreguntas++;
+	}
+}
+
+function veryEasy(combos){
+	combos.remove(selectedItem.index);
+}
+
+function setTimer(){
+	clearTimeout(countTime);
+countTime =	setTimeout(function (){
+		timeOut=1;
+
+	}, 20000);
+}
+
+function showTimer(){
+	var seconds_left = 20;
+	clearInterval(timer);
+	document.getElementById('time').style.color = 'white';
+	document.getElementById('time').innerHTML = seconds_left;
+	timer = setInterval(function(){
+	
+	document.getElementById('time').innerHTML = --seconds_left;
+	if (seconds_left == 0){
+		clearInterval(timer);
+	}
+	if (seconds_left == 5){
+		document.getElementById('time').style.color = 'red';
+	}
+	}, 1000);	
+}
+
+function easterEgg(){
+	if(numPreguntas==0 && cartasGiradas==0){
+		window.open('easterEgg.html','_self')		
+	}
+}
+
+function centerItems(){
+	var buttonrank = document.getElementById("buttonRank");
+	if(window.innerWidth < 500){
+		buttonrank.style.width = "40%";
+		buttonrank.style.margin = "0 auto";				
+	}else{
+		buttonrank.style.width = "initial";
+		buttonrank.style.margin = "initial";				
+	}
 }

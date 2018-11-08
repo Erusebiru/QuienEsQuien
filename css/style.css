@@ -1,73 +1,94 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+
 body{
 	background-image: url(../Imagenes/bosque.jpg);
 	background-size: cover;
 	background-repeat: no-repeat;
 }
 
-.windowMessage{
-	width: 350px;
-	height: 100px;
-	position: absolute;
-	left: 35%;
-	z-index: 2;
-	top: 35%;
-	border: 1px solid black;
-	text-align: center;
-	background-color: white;
-	padding: 15px;
-	display: none;
-	box-shadow: 0 0 10px #333;
-	border-radius: 12px;
-    animation-name: animatetop;
-    animation-duration: 0.6s
-}
-/* Add Animation */
-@keyframes animatetop {
-    from {top: -300px; opacity: 0}
-    to {top: 210px; opacity: 1}
-}
-
 img{
-	width: 100px;
-	height: 120px;
+	width: 100%;
+	height: 100%;
 	border-radius: 5px;
 }
+
 button{
-	width: 120px;
+	width: 130px;
 }
+
+iframe{
+	display: none;
+}
+
 #container{
 	width: 80%;
+	height: auto;
 	margin: 0 auto;
 	z-index: -1;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.box{
+	position: relative;
+	height: 100%;
 }
 
 #left{
-	width: 25%;
-	margin-right: 100px;
-	float:left;
+	width: 30%;
 }
 
-#preguntas{
-	margin-top: 40px;
+#container-time{
+	background-color: #333;
+	color: white;
+	border: 1px solid red;
+	width:120px;
+	height:40px;
+	text-align: center;
+	padding-top: 16px;
+	margin-bottom: 30px;
+	font-size: 25px;
+}
+
+.preguntas{
+  	width: 100%;
+  	display: table-caption;
+  	margin-bottom: 20px;
 }
 
 .preguntaForm{
 	background-color: #282626;
 	color: white;
 	text-align: center;
-	width: 180px;
+	width: 210px;
+	padding-top: 5px;
 }
-.respuesta{
-	background-color: #282626;
-	color: white;
+
+.formPreguntas{
+	margin-top: 50px;
+}
+
+.buttonRanking{
+	margin-bottom: 20px;
+}
+
+#right{
+	width: 70%;
 }
 
 .combo{
+	width: auto;
+}
+
+.comboModo{
 	width: 180px;
 }
 
 #marcador{
-	padding: 5px;
 	font-size: 14px;
 }
 
@@ -79,18 +100,23 @@ button{
 	transform: rotateY(180deg);
 	background-image: url('../Imagenes/reverso.jpeg');
 	background-size: cover;
-	width: 100px;
-	height: 120px;
+	width: 6.6em;
+	height: 8em;
 	border-radius: 5px;
+}
+
+.back-face:hover{
+	filter: invert(100%);
 }
 .back-face-selected{
 	background-image: url('../Imagenes/reverso.jpeg');
 	background-size: cover;
-	width: 100px;
-	height: 120px;
+	width: 125px !important;
+	height: 150px !important;
 	backface-visibility: hidden;
-	border-radius: 5px;
+	border-radius: 5px;	
 }
+
 .flip-card .front-face, .flip-card .back-face, .flip-card .selected, .back-face-selected{
 	transition: transform 500ms;
 	display: block;
@@ -99,112 +125,34 @@ button{
 	position: absolute;
 	backface-visibility: hidden;
 }
+
 .flip-card{
-	width: 100px;
-	height: 120px;
-	margin: 10px;
+	width: 6.6em;
+	height: 8em;
+	margin: 0.2em;
 	position: relative;
 }
+
 .flip-card.is-flipped, .selected.is-flipped{
 	transform: rotateY(180deg);
 	transition: transform 1s;
 	transform-style: preserve-3d;
 }
 
+
+.flip-card.is-flipped, .selected.is-flipped{
+	transform: rotateY(180deg);
+	transition: transform 1s;
+	transform-style: preserve-3d;
+}
+
+
 .selected{
 	transform: rotateY(180deg);
+	height: 150px !important;
+	width: 125px !important;
 }
 
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 99; /* Sit on top */
-    padding-top: 50px; /* Location of the box */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-.modal-content {
-	padding: 0 0 20px 0;
-    background-color: #fefefe;
-    margin: 0 auto; /* 15% from the top and centered */
-    margin-left: 25%;
-    border: 1px solid #888;
-    width: 65%; /* Could be more or less, depending on screen size */
-    height: auto;
-    max-height: 120px;
-	transition: max-height 2s ease-out;
-	overflow: hidden;
-	animation-name: animatetop;
-    animation-duration: 3s;
-	border-radius: 12px;
-}
-
-iframe{
-	display: none;
-}
-.modal-content.collapsed{
-	max-height: 600px;
-}
-
-#RankWindow{
-	width: 80%;
-	margin: 0 auto;
-}
-
-#otherRank{
-	display:block;
-	width: 80%;
-	margin: 10px auto;
-}
-
-#formRank{
-	display: none;
-	text-align: center;
-	width: 90%;
-	margin: 0 auto;
-}
-
-#hiddenForm{
-	display: none;
-}
-
-#countQuestions{
-	margin-left: 30px;
-}
-
-#shownForm{
-	display: none;
-	width: 50%;
-	margin: 0 auto;
-}
-
-#inputName{
-	float: left;
-	margin-left: 5%;
-}
-
-#record{
-	width: 38%;
-	margin: 0 auto;
-	text-align: center;
-	display: none;
-}
-#tablaRecord{
-	border-collapse: collapse;
-	margin-left: 40px;
-}
-#tablaRecord td{
-	border: 1px solid black;
-	padding: 5px;
-	width: 100px;
-	text-align: center;
-}
 #true,#false{
 	display: none;
 }
@@ -230,10 +178,161 @@ iframe{
     animation: blink 1s linear infinite;
 }
 
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 99; /* Sit on top */
+    padding-top: 50px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+	padding: 0 0 20px 0;
+    background-color: #fefefe;
+    margin: 0 auto; /* 15% from the top and centered */
+    margin-left: 25%;
+    border: 1px solid #888;
+    width: 70%; /* Could be more or less, depending on screen size */
+    height: auto;
+    max-height: 140px;
+	transition: max-height 2s ease-out;
+	overflow: hidden;
+	animation-name: animatetop;
+    animation-duration: 3s;
+	border-radius: 12px;
+}
+
+.modal-content.collapsed{
+	max-height: 600px;
+}
+
+#RankWindow{
+	width: 71%;
+	margin: 0 auto;
+	
+}
+
+#otherRank{
+	display:block;
+	width: 50%;
+	margin: 20px auto;
+}
+
+#formRank{
+	display: none;
+	text-align: center;
+	width: 100%;
+	margin: 0 auto;
+}
+
+#hiddenForm{
+	display: none;
+	margin: 10px;
+}
+
+#countQuestions{
+	margin-left: 30px;
+}
+
+#shownForm{
+	display: none;
+	width: 50%;
+	margin: 0 auto;
+	padding: 20px;
+}
+
+#inputName{
+	float: left;
+	margin-left: 5%;
+}
+
+#record{
+	width: 38%;
+	margin: 0 auto;
+	text-align: center;
+	display: none;
+	padding: 20px;
+}
+#tablaRecord{
+	border-collapse: collapse;
+	margin-left: 40px;
+}
+#tablaRecord td{
+	border: 1px solid black;
+	padding: 5px;
+	width: 100px;
+	text-align: center;
+}
+
 #canvas{
 	position: absolute;
 	display: none;
 	z-index: 10;
 	left: 0;
 	top: 0;
+}
+.Loser{
+	width: 80%;
+	text-align: center;
+	margin: 0 auto;
+	padding: 20px;
+}
+
+.cup{
+	margin: 3px;
+	width: 100%;
+	height: 100%;
+}
+
+/* RESPONSIVE */
+@media screen and (max-width:500px){
+	#left {
+		order:2;
+		width: 100%;
+		margin-bottom: 30px;
+	}
+
+	#right {
+		order:1;
+		width: 100%;
+	}
+	.cartaSeleccionada{
+		width: 35%;
+		margin: 0 auto;
+	}
+	
+	.formeEasy{
+		margin-left: 5px;
+	}
+
+	.preguntas, .rankModo{
+		width: 80%;
+		display: flex;
+		margin-left: 15%;
+    	justify-content: center;
+    	align-items: center;
+	}
+
+	#formeasy{
+		margin-left: 5px;
+	}
+
+	.tablaCartas{
+		width: 80%;
+		margin: 0 auto;
+	}
+
+	.preguntaForm{
+		margin: 0 auto;
+	}
+	
+	#container-time{
+		margin-bottom: 20px;
+	}
 }

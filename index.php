@@ -7,7 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<link rel="shortcut icon" href="#" />
 </head>
-<body onload="setTimeout(easterEgg, 50000000)" onresize="centerItems()">
+<body onload="setTimeout(easterEgg, 15000)" onresize="centerItems()">
 	<?	
 		session_start();
 		$config = specFile(); //Creamos el array de características.

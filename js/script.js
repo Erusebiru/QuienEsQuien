@@ -120,17 +120,12 @@ function workCombo(){
 	form.reset();
 }
 
-/*
-* Función para controlar cuántos combos han sido elegidos
-* Si ha sido 1 devolverá true, si no ha sido ninguno o si ha elegido más de 1 devolverá false y un mensaje.
-*/
 function checkCombo(combos){
 	var combo = combos.options;
 	selectedItem = combo[combo.selectedIndex];
 	return selectedItem;
 }
 
-//Ruben
 function activarModoEasy(){
 	modoEasy = "activado";
 }
@@ -154,11 +149,6 @@ function closeWindow(){
 
 function reloadGame(){
 	location.reload();
-}
-
-//Función que cierra la ventana de error
-function closeWindowAlert(button){
-	button.parentNode.style.display = "none";
 }
 
 //Función para cargar los datos de archivo a la base de datos de forma asíncrona
@@ -194,7 +184,6 @@ function endOfGame(){
 	var final = document.getElementsByName('front')[0];
 	var carta_seleccionada =  document.getElementById('elegida');
 	if(final.childNodes[1].firstChild.src == carta_seleccionada.src ){
-		//alert('ganaste');
 		win()
 	}else{
 		lose();
